@@ -1,0 +1,16 @@
+#create-event-btn {
+    margin: 0 var(--spacing-l);
+    padding: var(--spacing-l);
+  }
+  
+  p.aviso {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    background-image: url('/pattern.png');
+    padding: var(--spacing-m);
+  }
+  
+  p.aviso a {
+    background-color: var(--color-accent-2);
+  }
