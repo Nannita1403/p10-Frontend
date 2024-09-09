@@ -15,8 +15,12 @@ export const apiRequest = async ({
     method: method.toUpperCase(),
     body: JSON.stringify(body),
   };
-
+ try {
   const res = await fetch(`${mainRoute}/${endpoint}/${id}`, options);
-  return res;
+ } catch (error) {
+  console.log(error);
+  
+ }
+  
 
 };
