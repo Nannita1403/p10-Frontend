@@ -33,16 +33,25 @@ export const Login = () => {
 };
 
 export const loginRequest = async (username, password) => {
+
+  const objetoFinal = JSON.stringify({
+    username,
+    password
+});
+
   const res = await apiRequest({
     endpoint: 'users/login',
     method: 'POST',
-    body: { username, password },
+    body: objetoFinal,
+    headers: {
+      "Content-Type": "application/json"
+  }
   });
 
-  if (res.status === 200) {
-    const response = await res.json();
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
+  if (res.status ===  200) {
+    const respuestaFinal = await res.json();
+    localStorage.setItem('token', respuestaFinal.token);
+    localStorage.setItem('user', JSON.stringify(respuestaFinal.user));
     Header();
     Home();
   } else {
