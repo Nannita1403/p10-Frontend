@@ -4,7 +4,7 @@ import { Modal } from '../../PartsPage/Modal/Modal';
 import { showToast } from '../../Toasty/Toasty';
 
 export const DeleteEventButton = (buttonContainer, eventObject) => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = localStorage.getItem('user');
   //Si el usuario tiene permisoso de administrador, se muestra un botón que permite eliminar eventos
   if (user.role === 'admin') {
     const eventId = eventObject._id;

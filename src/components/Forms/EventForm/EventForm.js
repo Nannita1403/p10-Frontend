@@ -10,7 +10,7 @@ import { Modal } from '../../PartsPage/Modal/Modal';
 const postEvent = async e => {
   e.preventDefault();
 
-  const artistName = document.querySelector('#artist').value;
+  const artistName = document.querySelector('#artist');
   const dataList = document.querySelector('#artistEvents');
 
   const body = {
@@ -19,7 +19,7 @@ const postEvent = async e => {
     location: document.querySelector('#location').value,
     artist: dataList
       .querySelector(`[value="${artistName}"]`)
-      .getAttribute('data-id'),
+      .getAttribute('#data-id'),
   };
 
   const res = await apiRequest({

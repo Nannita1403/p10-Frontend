@@ -13,7 +13,7 @@ const navLayout = () => `
   <li id="log-link">
   ${
     localStorage.getItem('token')
-      ? profileIcon(JSON.parse(localStorage.getItem('user')).profilePic)
+      ? profileIcon(localStorage.getItem('user').profilePic)
       : 'Identificarse'
   }
   </li>
