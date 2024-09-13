@@ -34,19 +34,36 @@ export const Login = () => {
 
 export const loginRequest = async (username, password) => {
 
+  const userObject = {
+    username,
+    password
+  };
+ try {
   const res = await apiRequest({
     endpoint: 'users/login',
     method: 'POST',
-    body: { username, password},
+    body: userObject,
   });
 
-  if (res.status ===  200) {
-    const respuestaFinal = await res.json();
-    localStorage.setItem('token', respuestaFinal.token);
-    localStorage.setItem('user', JSON.stringify(respuestaFinal.user));
+  /*if (res.status ===  200) {
+    const data = await res.json();
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));*/
+
+    if (res) {
+      const {token, user} = res
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
     Header();
     Home();
-  } else {
-    showToast('Nombre de usuario o contraseña incorrecto', 'orange');
-  }
-};
+    }
+ } catch (error) {
+  showToast('Nombre de usuario o contraseña incorrecto', 'orange');
+
+  console.log('Error al hacer el Login', error);
+  
+ }
+}; 
+  /*} else {
+    showToast(data,'Nombre de usuario o contraseña incorrecto', 'orange');
+  }*/

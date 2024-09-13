@@ -11,13 +11,11 @@ const navLayout = () => `
     <a href="#" id="events-link">Eventos</a>
   </li>
   <li id="log-link">
-
-      ${
-        localStorage.getItem('token')
-          ? profileIcon(JSON.parse(localStorage.getItem('user')).profilePic)
-          : 'Identificarse'
-      }
-
+  ${
+    localStorage.getItem('token')
+      ? profileIcon(JSON.parse(localStorage.getItem('user')).profilePic)
+      : 'Identificarse'
+  }
   </li>
 </ul>`;
 
