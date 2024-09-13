@@ -34,18 +34,10 @@ export const Login = () => {
 
 export const loginRequest = async (username, password) => {
 
-  const objetoFinal = JSON.stringify({
-    username,
-    password
-});
-
   const res = await apiRequest({
     endpoint: 'users/login',
     method: 'POST',
-    body: objetoFinal,
-    headers: {
-      "Content-Type": "application/json"
-  }
+    body: { username, password},
   });
 
   if (res.status ===  200) {
