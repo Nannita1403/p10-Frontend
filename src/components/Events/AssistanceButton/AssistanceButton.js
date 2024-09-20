@@ -6,7 +6,7 @@ import './AssistanceButton.css';
 export const EventAssistanceButton = (buttonContainer, eventObject) => {
   //Si el usuario está identificado, verá un botón para manejar su asistencia a eventos
   if (localStorage.getItem('token')) {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = localStorage.getItem('user');
     const eventId = eventObject._id;
     const joinEventButton = document.createElement('button');
     const userIsGoing = eventObject.assistants.find(

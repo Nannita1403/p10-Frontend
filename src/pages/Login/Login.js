@@ -51,9 +51,10 @@ export const loginRequest = async (username, password) => {
     localStorage.setItem('user', JSON.stringify(data.user));*/
 
     if (res.status === 200) {
-      const {token, user} = res
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+      /*const {token, user} =  res;*/
+      const data = await res.json();
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', data.user);
     Header();
     Home();
     }
