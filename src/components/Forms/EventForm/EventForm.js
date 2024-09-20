@@ -10,8 +10,8 @@ import { Modal } from '../../PartsPage/Modal/Modal';
 const postEvent = async e => {
   e.preventDefault();
 
-  const artistName = document.querySelector('#artist');
-  const dataList = document.querySelector('#artistEvents');
+  const artistName = document.querySelector('#artist').value;
+  const dataList = document.querySelector('#list-of-Artists');
 
   const body = {
     name: document.querySelector('#name').value,
@@ -57,20 +57,20 @@ export const NewEventForm = () => {
     });
   const artistInputContainer = document.createElement('div');
   artistInputContainer.classList.add('input-container');
-  artistInputContainer.innerHTML = `  <label class="iLabel" for="artists">Artist</label>
-  <input class="input" list="artistEvents" id="artists" name="artist">
-  <datalist id="artistEvents"></datalist>`;
+  artistInputContainer.innerHTML = `  <label class="iLabel" for="artist">Artist</label>
+  <input class="input" list="list-of-Artists" id="artist" name="artist">
+  <datalist id="list-of-Artists"></datalist>`;
 
   document.body.append(eventFormContainer);
   document
     .querySelector('#create-event button')
     .insertAdjacentElement('beforebegin', artistInputContainer);
 
-  const datalistOfArtist = document.querySelector('#artistEvents');
+  const datalistOfArtist = document.querySelector('#list-of-Artists');
   apiRequest({ method: 'get', endpoint: 'artists' })
     .then(res => res.json())
-    .then(artistEvents => {
-      for (const artist of artistEvents) {
+    .then(listofArtists => {
+      for (const artist of listofArtists) {
         const option = document.createElement('option');
         option.value = artist.name;
         option.setAttribute('data-id', artist._id);
