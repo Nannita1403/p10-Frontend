@@ -17,5 +17,6 @@ export const apiRequest = async ({
   };
 
   const res = await fetch(`${mainRoute}/${endpoint}/${id}`, options);
-return res;
+return console.log(res);
+;
 };

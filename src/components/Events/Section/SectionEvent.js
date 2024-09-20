@@ -21,7 +21,7 @@ export const EventsSection = ({ title, eventTiming }) => {
 export const listOfEvents = async (parentNode, eventTiming) => {
   const res = await apiRequest ({ method: 'get', endpoint: 'events' });
   const listOfEvents = await res.json();
-  parentNode.innerHTML = '';
+  parentNode.innerHTML ='';
   sortByDate(listOfEvents);
   for (let event of listOfEvents) {
     event = dateComparator(event);
