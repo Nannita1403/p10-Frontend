@@ -22,21 +22,28 @@ const loginLayout = () => {
 //Aca lo escribo diferente:
 
   export const loginRequest = async (username, password) => {
+
+    const objetoFinal = JSON.stringify({
+      username,
+      password
+  });
+
   const res = await apiRequest({
     endpoint: 'users/login',
     method: 'POST',
-    body: {username, password},
+    body: objetoFinal,
   });
 
   
-  const data = await res.json();
+  
   if (res.status ===  200) {
+    const data = await res.json();
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', data.user);
     Header();
     Home();
   }else { 
-      showToast('Nombre de usuario o contraseña incorrecto', data,'orange');
+      showToast('Nombre de usuario o contraseña incorrecto','orange');
 
   };
 }
