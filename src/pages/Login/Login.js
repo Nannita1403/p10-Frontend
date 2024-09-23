@@ -7,7 +7,6 @@ import { Home } from "../Home/Home";
 import { showToast } from "../../components/Toasty/Toasty";
 
 
-
 const loginLayout = () => {
   //Selecciono y limpio el main
   const main = document.querySelector('main');
@@ -20,7 +19,43 @@ const loginLayout = () => {
   main.append(loginSection);
 };
 
+//Aca lo escribo diferente:
+
+  export const loginRequest = async (username, password) => {
+  const res = await apiRequest({
+    endpoint: 'users/login',
+    method: 'POST',
+    body: {username, password},
+  });
+
+  
+  const data = await res.json();
+  if (res.status ===  200) {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', data.user);
+    Header();
+    Home();
+  }else { 
+      showToast('Nombre de usuario o contraseña incorrecto', data,'orange');
+
+  };
+}
+
 const loginSubmit = async e => {
+  e.preventDefault();
+  const username = document.querySelector('#username').value;
+  const password = document.querySelector('#password').value;
+  loginRequest(username, password);
+}
+  export const Login = () => {
+    loginLayout();
+    document  
+    .querySelector('#login form')
+    .addEventListener('submit', loginSubmit);
+  };
+
+
+/*const loginSubmit = async e => {
   e.preventDefault();
   const username = document.querySelector('#username').value;
   const password = document.querySelector('#password').value;
@@ -34,37 +69,29 @@ export const Login = () => {
 
 export const loginRequest = async (username, password) => {
 
-  const userObject = {
-    username,
-    password
-  };
- try {
   const res = await apiRequest({
     endpoint: 'users/login',
     method: 'POST',
-    body: userObject,
+    body: {username, password},
   });
 
   /*if (res.status ===  200) {
     const data = await res.json();
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));*/
-
+/*
     if (res.status === 200) {
-      /*const {token, user} =  res;*/
-      const data = await res.json();
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', data.user);
+      const {token, user} =  res;
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', user);
     Header();
     Home();
-    }
- } catch (error) {
-  showToast('Nombre de usuario o contraseña incorrecto', 'orange');
-
-  console.log('Error al hacer el Login', error);
+    
+ } else {
   
+  showToast('Nombre de usuario o contraseña incorrecto', 'orange');
  }
-}; 
+}; */
   /*} else {
     showToast(data,'Nombre de usuario o contraseña incorrecto', 'orange');
   }*/
