@@ -45,7 +45,12 @@ const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
     requestObject.body = { assistants: userId };
   }
   //En ambos casos, se hace la petición
+
   const res = await apiRequest(requestObject);
+  console.log(requestObject);
+  
+  console.log(res);
+  
   const response = await res.json();
 
   if (res.status === 200) {
@@ -55,6 +60,8 @@ const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
     e.target.remove();
   } else {
     //Si no, se informa al usuario del error
+    console.log(response);
+    
     showToast(response, 'red');
   }
 };
