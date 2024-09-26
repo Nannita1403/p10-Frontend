@@ -6,8 +6,9 @@ import './AssistanceButton.css';
 export const EventAssistanceButton = (buttonContainer, eventObject) => {
   //Si el usuario está identificado, verá un botón para manejar su asistencia a eventos
   if (localStorage.getItem('token')) {
-    const user = localStorage.getItem('user');
-    const eventId = eventObject.id;
+    const user = JSON.parse(localStorage.getItem('user'));   
+    const eventId = eventObject._id;
+    console.log(eventId);
     const joinEventButton = document.createElement('button');
     const userIsGoing = eventObject.assistants.find(
       assistant => assistant._id === user._id
@@ -32,25 +33,11 @@ export const EventAssistanceButton = (buttonContainer, eventObject) => {
 
 const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
   e.target.classList.add('loading');
-  /*const requestObject = {
-    endpoint: 'events',
-    method: 'PUT'
-  };
-  if (userIsGoing) {
-    //Si el usuario está anotado al evento, uso el endpoint para darlo de baja
-    requestObject.id = `${eventId}/removeAssistant`;
-  } else {
-    //Si el usuario NO está anotado al evento, uso el endpoint general y paso los datos del asistente
-    requestObject.id = eventId;
-    requestObject.body = { assistants: userId };
-  }
-  //En ambos casos, se hace la petición*/
 
   const requestObject = {
     endpoint: 'events',
-    method: 'PUT',
-    body:''  };
-  const res = await apiRequest(requestObject);
+    method: 'PUT'
+   };
   
   if (userIsGoing) {
     //Si el usuario está anotado al evento, uso el endpoint para darlo de baja
@@ -61,7 +48,7 @@ const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
     requestObject.body = { assistants: userId };
   }
   console.log(requestObject);
-  
+  const res = await apiRequest(requestObject);
   console.log(res);
   
   const response = await res.json();
@@ -76,3 +63,17 @@ const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
     showToast(response, 'red');
   }
 };
+
+/*const requestObject = {
+    endpoint: 'events',
+    method: 'PUT'
+  };
+  if (userIsGoing) {
+    //Si el usuario está anotado al evento, uso el endpoint para darlo de baja
+    requestObject.id = `${eventId}/removeAssistant`;
+  } else {
+    //Si el usuario NO está anotado al evento, uso el endpoint general y paso los datos del asistente
+    requestObject.id = eventId;
+    requestObject.body = { assistants: userId };
+  }
+  //En ambos casos, se hace la petición*/
