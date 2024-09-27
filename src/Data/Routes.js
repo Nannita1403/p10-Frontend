@@ -1,4 +1,4 @@
 const localUrl = 'http://localhost:3000/api/v1';
-const vercelUrl = 'https://proy10-backend-to-frontend.vercel.app/api/v1';
+const vercelUrl = 'https://p10-frontend.vercel.app/';
 
-export const mainRoute = localUrl;
+export const mainRoute = vercelUrl;
