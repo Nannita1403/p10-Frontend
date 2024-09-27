@@ -3,8 +3,7 @@ import { DeleteEventButton } from '../DeleteButton/DeleteButton';
 import './CardEvent.css';
 
 export const EventCard = eventObject => {
-  console.log(eventObject);
-  
+
   const eventContainer = document.createElement('article');
   eventContainer.classList.add('flex-container');
   eventContainer.innerHTML = `
@@ -31,7 +30,6 @@ export const EventCard = eventObject => {
       eventContainer.querySelector('.event-info'),
       eventObject
     );
-    console.log(EventAssistanceButton);
     
   }
   return eventContainer;
