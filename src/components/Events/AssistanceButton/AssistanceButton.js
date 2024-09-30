@@ -55,12 +55,8 @@ const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
     requestObject.id = eventId;
     requestObject.body = { assistants: userId };
   }
-  console.log(requestObject);
   const res = await apiRequest(requestObject);
-  console.log(res, "Soy el res");
-  
   const response = await res.json();
-  console.log(response, "Soy el response");
   
   if (res.status === 200) {
     console.log("aqui");
