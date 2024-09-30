@@ -11,8 +11,7 @@ export const EventsSection = ({ title, eventTiming }) => {
   eventsTitle.textContent = title;
   eventSection.append(eventsTitle);
 
-  /*eventDiv.innerHTML = ` 
-  <dotlottie-player class="loader" src="https://lottie.host/b5ff9ff5-0262-45c7-b2d6-ba2a7e8487bc/d035grDmCh.json" speed="1" loop autoplay></dotlottie-player>`;*/
+  eventDiv.innerHTML = '';
   eventSection.append(eventDiv);
 
   return eventSection;
