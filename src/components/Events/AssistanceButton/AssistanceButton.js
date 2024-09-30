@@ -8,18 +8,14 @@ export const EventAssistanceButton = (buttonContainer, eventObject) => {
 
   if (localStorage.getItem('token')) {
     const user = JSON.parse(localStorage.getItem('user'));
-
-    console.log(user);
-    const userId = user._id
-    console.log(userId);
+    
     console.log(eventObject);
-    
     const eventId = eventObject._id;
-    
     console.log(eventId);
+
     const joinEventButton = document.createElement('button');
     const userIsGoing = eventObject.assistants.find(
-      assistant => assistant._id === userId
+      assistant => assistant._id === user._id
     );
     if (userIsGoing) {
       //Si ya está anotado, el botón le permite darse de baja
@@ -32,7 +28,7 @@ export const EventAssistanceButton = (buttonContainer, eventObject) => {
       //Si no está anotado, click en el botón para informar su asistencia
       joinEventButton.textContent = 'Unirme';
       joinEventButton.addEventListener('click', e => {
-        handleEventAssistance({ e, eventId, userId });
+        handleEventAssistance({ e, eventId, userId: user._id });
       });
     }
     buttonContainer.append(joinEventButton);
@@ -59,12 +55,8 @@ const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
   const response = await res.json();
   
   if (res.status === 200) {
-    console.log("aqui");
-    
     //Si sale todo bien, se actualiza el botón
-    const { updatedEvent } = response;
-    console.log(response);
-    
+    const { updatedEvent } = response;    
     EventAssistanceButton(e.target.parentNode, updatedEvent);
     e.target.remove();
   } else {
