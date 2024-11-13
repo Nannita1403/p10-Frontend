@@ -8,7 +8,8 @@ export const EventCard = eventObject => {
   eventContainer.classList.add('flex-container');
   eventContainer.innerHTML = `
   <div class="img-container">
-    <img src="${eventObject.img ?? eventObject.artist?.img}" alt="${
+
+    <img src="${eventObject.img || 'https://tse4.mm.bing.net/th?id=OIP.1O0V14wWiWQFJBdteza4DgAAAA&pid=Api&P=0&h=180'}" alt="${
     eventObject.name}"/>
   </div>
   <div class="event-info flex-container">

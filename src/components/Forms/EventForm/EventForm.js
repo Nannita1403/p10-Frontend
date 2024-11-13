@@ -42,19 +42,20 @@ const postEvent = async e => {
   }
 };
 export const NewEventForm = () => {
+
   const eventFormContainer = Modal();
   eventFormContainer.id = 'create-event';
-
   UserForm(eventFormContainer, 'Crea tu propio evento', createEventForm);
   eventFormContainer
     .querySelector('[type="date"]')
     .addEventListener('change', e => {
       const inputDate = new Date(e.target.value);
       const now = new Date();
-      if (now > inputDate) {
-        alert('La fecha del evento debe ser futura');
-      }
+      // if (now > inputDate) {
+      //   alert('La fecha del evento debe ser futura');
+      // }
     });
+
   const artistInputContainer = document.createElement('div');
   artistInputContainer.classList.add('input-container');
   artistInputContainer.innerHTML = `  <label class="iLabel" for="artist">Artist</label>

@@ -1,7 +1,7 @@
 form.user-form {
     background-image: url('/pattern.png');
     border-radius: var(--border-radius-l);
-    height: 500px;
+    height: 700px;
     padding: var(--spacing-m);
     width: 320px;
   }
@@ -19,6 +19,7 @@ form.user-form {
   
   .input {
     border: solid 1.5px var(--color-dark-2);
+    width: 200px;
     border-radius: var(--border-radius-l);
     background: white;
     padding: 1rem;

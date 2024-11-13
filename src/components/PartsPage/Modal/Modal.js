@@ -5,7 +5,7 @@ export const Modal = () => {
   modal.classList.add('modal', 'visible');
   const closeBtn = document.createElement('span');
   closeBtn.classList.add('material-symbols-outlined');
-  closeBtn.textContent = 'close';
+  closeBtn.textContent = 'X';
   closeBtn.addEventListener('click', () => modal.remove());
   modal.append(closeBtn);
   return modal;
