@@ -33,10 +33,10 @@ export const EventAssistanceButton = (buttonContainer, eventObject) => {
     }
     buttonContainer.append(joinEventButton);
   }
-};
+ };
 
 const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
-  e.target.classList.add('loading');
+ e.target.classList.add('loading');
 
   const requestObject = {
     endpoint: 'events',
@@ -56,25 +56,11 @@ const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
   
   if (res.status === 200) {
     //Si sale todo bien, se actualiza el botón
-    const { updatedEvent } = response;    
-    EventAssistanceButton(e.target.parentNode, updatedEvent);
+    const { eventUpdate } = response;    
+    EventAssistanceButton(e.target.parentNode, eventUpdate);
     e.target.remove();
   } else {
     //Si no, se informa al usuario del error    
     showToast(response, 'red');
   }
-};
-
-/*const requestObject = {
-    endpoint: 'events',
-    method: 'PUT'
-  };
-  if (userIsGoing) {
-    //Si el usuario está anotado al evento, uso el endpoint para darlo de baja
-    requestObject.id = `${eventId}/removeAssistant`;
-  } else {
-    //Si el usuario NO está anotado al evento, uso el endpoint general y paso los datos del asistente
-    requestObject.id = eventId;
-    requestObject.body = { assistants: userId };
-  }
-  //En ambos casos, se hace la petición*/
+ };
