@@ -20,6 +20,7 @@ const postEvent = async e => {
     artist: dataList
       .querySelector(`[value="${artistName}"]`)
       .getAttribute('#data-id'),
+    img: document.querySelector('#image')
   };
 
   const res = await apiRequest({
@@ -51,9 +52,6 @@ export const NewEventForm = () => {
     .addEventListener('change', e => {
       const inputDate = new Date(e.target.value);
       const now = new Date();
-      // if (now > inputDate) {
-      //   alert('La fecha del evento debe ser futura');
-      // }
     });
 
   const artistInputContainer = document.createElement('div');

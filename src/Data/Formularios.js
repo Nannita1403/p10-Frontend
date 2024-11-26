@@ -12,5 +12,6 @@ export const registerForm = [
     { id: 'name', name: 'Nombre del Evento', type: 'text' },
     { id: 'date', name: 'Fecha', type: 'date' },
     { id: 'location', name: 'Lugar', type: 'text' },
-    { id: 'price', name: 'Precio', type: 'number' }
+    { id: 'price', name: 'Precio', type: 'number' },
+    { id: 'img', name: 'Imagen', type: 'file' }
   ];

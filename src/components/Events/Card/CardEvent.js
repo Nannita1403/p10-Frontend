@@ -8,9 +8,7 @@ export const EventCard = eventObject => {
   eventContainer.classList.add('flex-container');
   eventContainer.innerHTML = `
   <div class="img-container">
-
-    <img src="${eventObject.img || 'https://tse4.mm.bing.net/th?id=OIP.1O0V14wWiWQFJBdteza4DgAAAA&pid=Api&P=0&h=180'}" alt="${
-    eventObject.name}"/>
+<img src="${eventObject.image || 'https://tse4.mm.bing.net/th?id=OIP.1O0V14wWiWQFJBdteza4DgAAAA&pid=Api&P=0&h=180'}" alt="${eventObject.name}" />  
   </div>
   <div class="event-info flex-container">
     <div>
@@ -22,6 +20,9 @@ export const EventCard = eventObject => {
     </div>
   </div>
   `;
+
+  // <img src="${eventObject.img || 'https://tse4.mm.bing.net/th?id=OIP.1O0V14wWiWQFJBdteza4DgAAAA&pid=Api&P=0&h=180'}" alt="${
+  //   eventObject.name}"/>
   if (localStorage.getItem('user')) {
     DeleteEventButton(eventContainer, eventObject);
   }

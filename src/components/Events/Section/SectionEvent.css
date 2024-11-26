@@ -14,6 +14,7 @@
     justify-content: flex-start;
     gap: var(--spacing-l);
     padding: var(--spacing-l);
+    width: 100%;
     overflow-x: scroll;
   
   }

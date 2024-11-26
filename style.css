@@ -214,5 +214,5 @@ button.round {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--spacing-l);
+  gap: var(--spacing-m);
 }
