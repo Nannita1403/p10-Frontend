@@ -2,6 +2,7 @@ import { Events } from '../../../pages/Events/Events';
 import { Home } from '../../../pages/Home/Home';
 import { Login } from '../../../pages/Login/Login';
 import { Register } from '../../../pages/Register/Register';
+import { logout } from '../../../Utils/session';
 import { profileIcon } from '../ImgProfile/ImgProfile';
 import './HeaderNav.css';
 
@@ -58,12 +59,7 @@ export const Header = () => {
   const logLink = document.querySelector('#log-link');
 
   if (localStorage.getItem('token')) {
-    logLink.addEventListener('click', () => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      Header();
-      Home();
-    });
+    logLink.addEventListener('click', logout);
   } else {
     logLink.append(loginMenuLayout());
   }

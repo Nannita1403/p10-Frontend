@@ -1,7 +1,10 @@
 
 import { showToast } from "../components/Toasty/Toasty";
 import { mainRoute } from "../Data/Routes";
+import { logout } from "./session";
 
+let sessionExpiredShown = false;
+ 
 export const apiRequest = async ({ endpoint, id = '', method, body }) => {
   const token = localStorage.getItem("token");
 
@@ -19,16 +22,19 @@ export const apiRequest = async ({ endpoint, id = '', method, body }) => {
 
   try {
     const res = await fetch(`${mainRoute}/${endpoint}/${id}`, options);
-    // Si el Token es inválido
-    if (res.status === 401 || res.status === 403) {
-      console.warn("Token inválido o expirado. Limpiando sesión...");
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      showToast("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.", "warning");
-      setTimeout(() => (window.location.href = "/login"), 2500);
-      return; 
+
+  if (res.status === 401 || res.status === 403) {
+  if (!sessionExpiredShown) {
+        sessionExpiredShown = true;
+        showToast("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.", "warning");
+        setTimeout(() => {
+          sessionExpiredShown = false;
+          logout(); 
+        }, 2500);
+      }
+      return;
     }
-    //si hay otros errores
+
     if (!res.ok) {
       const errorText = await res.text();
       throw new Error(errorText || "Error en la petición");
