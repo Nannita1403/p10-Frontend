@@ -14,6 +14,7 @@ export const apiRequest = async ({ endpoint, id = '', method, body }) => {
       ...(token && { Authorization: `Bearer ${token}` }),
     },
     method: method.toUpperCase(),
+    credentials: "include", 
   };
 
   if (body) {
@@ -21,8 +22,10 @@ export const apiRequest = async ({ endpoint, id = '', method, body }) => {
   }
 
   try {
-    const res = await fetch(`${mainRoute}/${endpoint}/${id}`, options);
-
+  const url = id ? `${mainRoute}/${endpoint}/${id}` : `${mainRoute}/${endpoint}`;
+  const res = await fetch(url, options);
+  console.log(url, options);
+  
   if (res.status === 401 || res.status === 403) {
   if (!sessionExpiredShown) {
         sessionExpiredShown = true;
@@ -40,7 +43,15 @@ export const apiRequest = async ({ endpoint, id = '', method, body }) => {
       throw new Error(errorText || "Error en la petición");
     }
 
-    return res;
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      data = null;
+    }
+    return data;
+
+
   } catch (error) {
     console.error("Error en apiRequest:", error);
     showToast(error.message || "Error en la comunicación con el servidor", "error");
