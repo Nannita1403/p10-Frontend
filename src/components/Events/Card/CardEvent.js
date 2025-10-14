@@ -21,9 +21,13 @@ export const EventCard = eventObject => {
     ? `${eventObject.price} €`
     : 'Precio a confirmar';
 
+  const safeImage = eventObject.image 
+  ? eventObject.image.replace(/^http:\/\//i, 'https://') 
+  : 'https://media.istockphoto.com/id/1498453054/es/foto/pareja-de-baile-en-concierto.jpg?s=612x612&w=0&k=20&c=TXsegdlFbMckEoKfa_43cXNgJePv5YgW8UIMmjC9AOY=';
+
   eventContainer.innerHTML = `
     <div class="img-container">
-      <img src="${eventObject.image || 'https://media.istockphoto.com/id/1498453054/es/foto/pareja-de-baile-en-concierto.jpg?s=612x612&w=0&k=20&c=TXsegdlFbMckEoKfa_43cXNgJePv5YgW8UIMmjC9AOY='}" alt="${eventObject.name}" />  
+      <img src="${safeImage}" alt="${eventObject.name}" />  
     </div>
     <div class="event-info flex-container">
       <div>

@@ -84,6 +84,13 @@ export const NewEventForm = () => {
   eventFormContainer.id = 'create-event';
 
   UserForm(eventFormContainer, 'Crea tu propio evento', createEventForm);
+  document.body.appendChild(eventFormContainer); 
+
+  const form = eventFormContainer.querySelector('form');
+  if (!form) {
+    console.error('❌ No se encontró el formulario dentro del modal');
+    return;
+  }
 
   const artistSelectContainer = document.createElement('div');
   artistSelectContainer.classList.add('input-container');
@@ -93,15 +100,12 @@ export const NewEventForm = () => {
       <option value="">Selecciona un artista</option>
     </select>
   `;
-  const form = document.querySelector('#create-event form');
   const submitButton = form.querySelector('button');
-
-  // Si no hay botón todavía, simplemente lo agregamos al final del formulario
-  if (submitButton) {
-    form.insertBefore(artistSelectContainer, submitButton);
-  } else {
-    form.appendChild(artistSelectContainer);
-  }
+    if (submitButton) {
+      form.insertBefore(artistSelectContainer, submitButton);
+    } else {
+      form.appendChild(artistSelectContainer);
+    }
 
   const artistSelect = document.querySelector('#artist');
   fetch(`${mainRoute}/artists`)
@@ -113,24 +117,23 @@ export const NewEventForm = () => {
         option.textContent = artist.name;
         artistSelect.append(option);
       }
-    });
+    })
+      .catch(err => console.error('Error cargando artistas:', err));
 
-    if (!document.querySelector('#price')) {
-    const priceContainer = document.createElement('div');
-    priceContainer.classList.add('input-container');
-    priceContainer.innerHTML = `
-      <label class="iLabel" for="price">Precio (€)</label>
-      <input class="input" type="number" id="price" name="price" min="0" step="0.01" placeholder="Ej: 20" required>
-    `;
-    const form = document.querySelector('#create-event form');
-    const submitButton = form.querySelector('button');
-    if (submitButton) {
-      form.insertBefore(priceContainer, submitButton);
-    } else {
-      form.appendChild(priceContainer);
+
+    if (!form.querySelector('#price')) {
+      const priceContainer = document.createElement('div');
+      priceContainer.classList.add('input-container');
+      priceContainer.innerHTML = `
+        <label class="iLabel" for="price">Precio (€)</label>
+        <input class="input" type="number" id="price" name="price" min="0" step="0.01" placeholder="Ej: 20" required>
+      `;
+      if (submitButton) {
+        form.insertBefore(priceContainer, submitButton);
+      } else {
+        form.appendChild(priceContainer);
+      }
     }
-  }
-
 
    const imageInput = document.querySelector('#image');
   if (imageInput) {
@@ -141,5 +144,5 @@ export const NewEventForm = () => {
     imageInput.addEventListener('change', previewImage);
   }
   
-  document.querySelector('#create-event form').addEventListener('submit', postEvent);
-};
+    form.addEventListener('submit', postEvent);
+  }
