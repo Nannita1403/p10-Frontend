@@ -8,48 +8,51 @@ import { apiRequest } from '../../Utils/ApiRequest';
 const registerLayout = () => {
   const main = document.querySelector('main');
   main.innerHTML = '';
-  //Creo el contenedor para el formulario de registro
+
   const registerSection = document.createElement('section');
   registerSection.id = 'register';
-  //Creo el formulario
+
   UserForm(registerSection, 'Register', registerForm);
-  //Agrego un link a la sección de registro
+
   const isRegisteredQuery = document.createElement('p');
   isRegisteredQuery.innerHTML = ` ¿Ya estás registrado? <a href=#>Login</a>`;
   const title = registerSection.querySelector('h2');
   title.insertAdjacentElement('afterend', isRegisteredQuery);
   isRegisteredQuery.querySelector('a').addEventListener('click', Login);
-  //Agrego los componentes al contenedor
+
   main.append(registerSection);
 };
 
 const registerSubmit = async e => {
   e.preventDefault();
-  //Recojo los datos del formulario
   const username = document.querySelector('#username').value;
   const password = document.querySelector('#password').value;
   const email = document.querySelector('#email').value;
-  //Los envio a la BBDD con un post request
-  const response = await apiRequest({
-    endpoint: 'users/register',
-    method: 'POST',
-    body: { username, email, password },
-  });
 
-  //Recojo la respuesta
-  const data = await response.json();
-  //Si hay algun error, lo muestro al usuario
-  if (response.status !== 201) {
-    showToast(data, 'red');
-  } else {
-    //Si no hay errores, logueo al usuario y redirijo al home
-    loginRequest(username, password);
+  try {
+    const response = await apiRequest({
+      endpoint: 'users/register',
+      method: 'POST',
+      body: { username, email, password },
+    });
+
+    if (!response) return; 
+
+    const data = await response.json();
+
+    if (response.status !== 201) {
+      showToast(data.message || "Error al registrarse", "error");
+    } else {
+      showToast("Registro exitoso, iniciando sesión...", "success");
+      loginRequest(username, password);
+    }
+  } catch (error) {
+    console.error("Error en registerSubmit:", error);
+    showToast(error.message || "Error en la comunicación con el servidor", "error");
   }
-};
+  };
 
-export const Register = () => {
-  registerLayout();
-  document
-    .querySelector('#register form')
-    .addEventListener('submit', registerSubmit);
-};
+  export const Register = () => {
+    registerLayout();
+    document.querySelector("#register form").addEventListener("submit", registerSubmit);
+  };

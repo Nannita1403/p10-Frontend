@@ -38,14 +38,13 @@ const deleteEvent = async (e, eventId) => {
 
   const response = await res.json();
   //Si sale todo bien, se elimina la tarjeta y se muestra un mensaje
-  if (res.status === 200) {
-    showToast(response.message, 'red');
-    e.target.parentNode.remove();
-    document.querySelector('.modal').remove();
-  } else {
-    //Si no, se informa al usuario del error
-    showToast(response, 'red');
-  }
+if (res.status === 200) {
+  showToast(response.message || "Evento eliminado correctamente", "success");
+  e.target.parentNode.remove();
+  document.querySelector('.modal')?.remove();
+} else {
+  showToast(response.message || "No se pudo eliminar el evento", "error");
+}
 };
 
 const warningBanner = () => {

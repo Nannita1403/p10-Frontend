@@ -1,0 +1,22 @@
+.toastify {
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.4s ease;
+  z-index: 9999;
+}
+
+.toastify.toastify-show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toastify.toastify-hide {
+  opacity: 0;
+  transform: translateY(-20px);
+}

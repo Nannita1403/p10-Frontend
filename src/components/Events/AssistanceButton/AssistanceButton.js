@@ -55,12 +55,11 @@ const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
   const response = await res.json();
   
   if (res.status === 200) {
-    //Si sale todo bien, se actualiza el botón
-    const { eventUpdate } = response;    
+    const { eventUpdate } = response;
     EventAssistanceButton(e.target.parentNode, eventUpdate);
     e.target.remove();
   } else {
-    //Si no, se informa al usuario del error    
-    showToast(response, 'red');
+    // Muestra error usando el tipo 'error'
+    showToast(response.message || "No se pudo actualizar tu asistencia", "error");
   }
  };
