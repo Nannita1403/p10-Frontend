@@ -19,15 +19,33 @@ export const EventsSection = ({ title, eventTiming }) => {
 
 export const listOfEvents = async (parentNode, eventTiming) => {
   const res = await apiRequest ({ method: 'GET', endpoint: 'events' });
-  const listOfEvents = await res.json();
+
+  const events = await res.json();
   parentNode.innerHTML ='';
-  sortByDate(listOfEvents);
-  for (let event of listOfEvents) {
+
+  sortByDate(events);
+
+  for (let event of events) {
     event = dateComparator(event);
+
     if (event[eventTiming]) {
-      const eventCard = EventCard(event);
-      parentNode.classList.add('events-container');
-      parentNode.append(eventCard);
+      if (event.date) {
+        const dateObj = new Date(event.date);
+        if (!isNaN(dateObj)) {
+          const day = String(dateObj.getDate()).padStart(2, '0');
+          const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+          const year = dateObj.getFullYear();
+          event.date = `${day}/${month}/${year}`;
+        }
+      }
+    if (event.price && !isNaN(event.price)) {
+          event.price = `${event.price} €`;
+        } else {
+          event.price = 'Precio a confirmar';
+        }
+
+        const eventCard = EventCard(event);
+        parentNode.append(eventCard);
+      }
     }
-  }
 };
