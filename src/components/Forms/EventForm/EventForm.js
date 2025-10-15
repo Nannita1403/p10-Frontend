@@ -8,9 +8,7 @@ import { mainRoute } from '../../../Data/Routes';
 
 const postEvent = async e => {
   e.preventDefault();
-
-  const form = document.querySelector('#create-event form');
-  const formData = new FormData(form);
+  const form = e.target; // <-- aquí tomamos el formulario que disparó el submit
 
   const artistSelect = form.querySelector('#artist');
   if (!artistSelect.value) {
@@ -24,12 +22,14 @@ const postEvent = async e => {
     return;
   }
 
-  if (!form.querySelector('#name').value || !form.querySelector('#date').value) {
+  const nameInput = form.querySelector('#name');
+  const dateInput = form.querySelector('#date');
+  if (!nameInput.value || !dateInput.value) {
     showToast('El nombre y la fecha son obligatorios', 'orange');
     return;
   }
 
-  const selectedDate = new Date(form.querySelector('#date').value);
+  const selectedDate = new Date(dateInput.value);
   const today = new Date();
   today.setHours(0,0,0,0);
   if (selectedDate < today) {
@@ -38,28 +38,37 @@ const postEvent = async e => {
   }
 
   const imageInput = form.querySelector('#image');
- if (!imageInput || !imageInput.files[0]) {
+  if (!imageInput || !imageInput.files[0]) {
     showToast('Selecciona una imagen para el evento', 'orange');
     return;
   }
+
+  // Crear FormData después de las validaciones
+  const formData = new FormData(form);
 
   try {
     const res = await fetch(`${mainRoute}/events`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`, // no tocar Content-Type
       },
       body: formData,
     });
 
-    const data = await res.json();
-    if (res.status === 201) {
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      data = null;
+    }
+
+    if (res.status === 201 && data) {
       showToast(data.message || 'Evento creado con éxito', 'linear-gradient(to right, #00b09b, #96c93d)');
       document.querySelector('#create-event')?.remove();
       const upcomingEventsDiv = document.querySelector('section.isUpcoming > div');
       await listOfEvents(upcomingEventsDiv, 'isUpcoming');
     } else {
-      showToast(data.message || 'Error al crear el evento', 'red');
+      showToast(data?.message || 'Error al crear el evento', 'red');
     }
   } catch (error) {
     console.error('Error creando evento:', error);
@@ -92,6 +101,7 @@ export const NewEventForm = () => {
     return;
   }
 
+  // --- Artista ---
   const artistSelectContainer = document.createElement('div');
   artistSelectContainer.classList.add('input-container');
   artistSelectContainer.innerHTML = `
@@ -101,13 +111,13 @@ export const NewEventForm = () => {
     </select>
   `;
   const submitButton = form.querySelector('button');
-    if (submitButton) {
-      form.insertBefore(artistSelectContainer, submitButton);
-    } else {
-      form.appendChild(artistSelectContainer);
-    }
+  if (submitButton) {
+    form.insertBefore(artistSelectContainer, submitButton);
+  } else {
+    form.appendChild(artistSelectContainer);
+  }
 
-  const artistSelect = document.querySelector('#artist');
+  const artistSelect = form.querySelector('#artist');
   fetch(`${mainRoute}/artists`)
     .then(res => res.json())
     .then(listOfArtists => {
@@ -118,24 +128,25 @@ export const NewEventForm = () => {
         artistSelect.append(option);
       }
     })
-      .catch(err => console.error('Error cargando artistas:', err));
+    .catch(err => console.error('Error cargando artistas:', err));
 
-
-    if (!form.querySelector('#price')) {
-      const priceContainer = document.createElement('div');
-      priceContainer.classList.add('input-container');
-      priceContainer.innerHTML = `
-        <label class="iLabel" for="price">Precio (€)</label>
-        <input class="input" type="number" id="price" name="price" min="0" step="0.01" placeholder="Ej: 20" required>
-      `;
-      if (submitButton) {
-        form.insertBefore(priceContainer, submitButton);
-      } else {
-        form.appendChild(priceContainer);
-      }
+  // --- Precio ---
+  if (!form.querySelector('#price')) {
+    const priceContainer = document.createElement('div');
+    priceContainer.classList.add('input-container');
+    priceContainer.innerHTML = `
+      <label class="iLabel" for="price">Precio (€)</label>
+      <input class="input" type="number" id="price" name="price" min="0" step="0.01" placeholder="Ej: 20" required>
+    `;
+    if (submitButton) {
+      form.insertBefore(priceContainer, submitButton);
+    } else {
+      form.appendChild(priceContainer);
     }
+  }
 
-   const imageInput = document.querySelector('#image');
+  // --- Vista previa de imagen ---
+  const imageInput = form.querySelector('#image');
   if (imageInput) {
     const previewDiv = document.createElement('div');
     previewDiv.id = 'image-preview';
@@ -143,6 +154,6 @@ export const NewEventForm = () => {
     imageInput.insertAdjacentElement('afterend', previewDiv);
     imageInput.addEventListener('change', previewImage);
   }
-  
-    form.addEventListener('submit', postEvent);
-  }
+
+  form.addEventListener('submit', postEvent);
+};
