@@ -3,12 +3,11 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: flex-start;
-  width: 250px;
-  height: 350px;
+  width: 300px;
 }
 
 .flex-container.events-container > article {
-  width: 220px;
+  width: 300px;
   min-height: 350px;
   border-radius: var(--border-radius-l);
   overflow: hidden;
@@ -27,17 +26,17 @@
 }
 
 .flex-container.events-container > article > div.img-container {
-  height: 200px;     
+  width: 300px;   
   overflow: hidden;
   background-color: var(--color-dark-2);
   display: flex;
   align-items: center;
   justify-content: center;
+  
 }
 
 .flex-container.events-container > article > div.img-container > img {
-  width: 100%;
-  height: 100%;
+  width: 220px;
   object-fit: cover;
   object-position: center;
   border-radius: 8px;
