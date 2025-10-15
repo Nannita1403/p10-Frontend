@@ -38,7 +38,7 @@ const postEvent = async e => {
   }
 
   const imageInput = form.querySelector('#image');
-  if (!imageInput.files[0]) {
+ if (!imageInput || !imageInput.files[0]) {
     showToast('Selecciona una imagen para el evento', 'orange');
     return;
   }
