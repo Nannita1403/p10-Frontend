@@ -26,10 +26,6 @@
   transform: translateY(-5px);
 }
 
-.flex-container.events-container > article > div {
-  width: 100%;
-}
-
 .flex-container.events-container > article > div.img-container {
   height: 200px;     
   overflow: hidden;
