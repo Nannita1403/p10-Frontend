@@ -3,11 +3,12 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: flex-start;
-  width: 300px;
+  width: 100%; 
+  margin: 0 auto; 
 }
 
 .flex-container.events-container > article {
-  width: 300px;
+  width: 220px;
   min-height: 350px;
   border-radius: var(--border-radius-l);
   overflow: hidden;
@@ -35,7 +36,6 @@
   object-fit: cover; 
   object-position: center;
   display: block;
-  border-radius: 8px 8px 0 0; 
 }
 
 .flex-container.events-container > article > div.event-info {
