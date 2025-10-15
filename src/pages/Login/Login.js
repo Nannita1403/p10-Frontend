@@ -18,16 +18,15 @@ const loginLayout = () => {
 };
 
   export const loginRequest = async (username, password) => {
-  const res = await apiRequest({
+  const data = await apiRequest({
     endpoint: 'users/login',
     method: 'POST',
     body: { username, password },
   });
 
-  if (!res) return;
+  if (!data) return;
 
-  if (res.status === 200) {
-  const data = await res.json();
+  if (data.token && data.user) {
   const safeUser = {
     _id: data.user._id,
     username: data.user.username,
@@ -37,11 +36,12 @@ const loginLayout = () => {
   };
     localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(safeUser));
+
     Header();
     Home();
     showToast(`¡Bienvenido, ${safeUser.username}!`, "success");
   }else {
-    const data = await res.json();
+
     showToast(data.message || "Nombre de usuario o contraseña incorrectos", "error");
   }
   };

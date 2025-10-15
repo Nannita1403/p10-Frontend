@@ -18,9 +18,8 @@ export const EventsSection = ({ title, eventTiming }) => {
 };
 
 export const listOfEvents = async (parentNode, eventTiming) => {
-  const res = await apiRequest ({ method: 'GET', endpoint: 'events' });
+  const events = await apiRequest ({ method: 'GET', endpoint: 'events' });
 
-  const events = await res.json();
   parentNode.innerHTML ='';
 
   sortByDate(events);

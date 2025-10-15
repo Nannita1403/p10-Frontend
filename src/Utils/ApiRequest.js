@@ -24,7 +24,7 @@ export const apiRequest = async ({ endpoint, id = '', method, body }) => {
   const url = id ? `${mainRoute}/${endpoint}/${id}` : `${mainRoute}/${endpoint}`;
   const res = await fetch(url, options);
   
-  if (!res.ok) {
+      if (!res.ok) {
       const errorText = await res.text();
       throw new Error(errorText || "Error en la petición");
     }
@@ -36,6 +36,7 @@ export const apiRequest = async ({ endpoint, id = '', method, body }) => {
       data = null;
     }
     return data;
+
 
   } catch (error) {
     console.error("Error en apiRequest:", error);
