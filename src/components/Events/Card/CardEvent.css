@@ -51,8 +51,8 @@
   width: 100%;
 }
 
-@media (max-width: 600px) {
+/*@media (max-width: 600px) {
   .flex-container.events-container > article {
     width: 100%;
   }
-}
+}*/
