@@ -1,44 +1,48 @@
-.flex-container.events-container {
+.events-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: flex-start;
   width: 100%; 
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
-.flex-container.events-container > article {
+.events-container .event-card {
   width: 220px;
   min-height: 350px;
   border-radius: var(--border-radius-l);
   overflow: hidden;
-  box-shadow: 5px 10px 15px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 10px 15px 3px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
   background-color: #fff;
   transition: transform 0.2s;
 }
 
-.flex-container.events-container > article:hover {
+.events-container .event-card:hover {
   transform: translateY(-5px);
 }
 
-.flex-container.events-container > article > div.img-container {
+.events-container .event-card .img-container {
   width: 100%;
-  height: 200px;  
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background-color: var(--color-dark-2);
+  border-radius: var(--border-radius-l) var(--border-radius-l) 0 0;
+
 }
 
-.flex-container.events-container > article > div.img-container > img {
+.events-container .event-card .img-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
   object-position: center;
   display: block;
 }
 
-.flex-container.events-container > article > div.event-info {
+.events-container .event-card .event-info {
   padding: var(--spacing-m);
   padding-top: 0;
   display: flex;
@@ -47,12 +51,12 @@
   flex-grow: 1;
 }
 
-.flex-container.events-container > article > div.event-info > div {
+.events-container .event-card .event-info > div {
   width: 100%;
 }
 
-/*@media (max-width: 600px) {
-  .flex-container.events-container > article {
+@media (max-width: 600px) {
+  .events-container .event-card {
     width: 100%;
   }
-}*/
+}

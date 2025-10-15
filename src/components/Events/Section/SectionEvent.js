@@ -10,7 +10,7 @@ export const EventsSection = ({ title, eventTiming }) => {
   const eventDiv = document.createElement('div');
   eventsTitle.textContent = title;
   eventSection.append(eventsTitle);
-
+  eventDiv.classList.add('events-container'); 
   eventDiv.innerHTML = '';
   eventSection.append(eventDiv);
 

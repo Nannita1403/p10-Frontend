@@ -1,23 +1,30 @@
 .events {
     display: block;
-    margin-top: var(--spacing-l);
-    padding: var(--spacing-s);
-    width: 100%;
   }
   
-  .events > div {
+  /*.events > div {
     display: flex;
     justify-content: center;
-  }
+  }*/
   
+  .events-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0 auto;
+}
+
   .events > div.events-container {
-    justify-content: flex-start;
-    gap: var(--spacing-l);
-    padding: var(--spacing-l);
-    width: 100%;
-    overflow-x: scroll;
-  
-  }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; 
+  gap: var(--spacing-m);       
+  padding: var(--spacing-s);   
+  width: 100%;
+  overflow: visible;         
+}
   .events .loader {
     background: transparent;
     height: 70px;

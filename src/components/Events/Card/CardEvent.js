@@ -4,7 +4,7 @@ import './CardEvent.css';
 
 export const EventCard = eventObject => {
   const eventContainer = document.createElement('article');
-  eventContainer.classList.add('flex-container');
+  eventContainer.classList.add('event-card');
 
   let formattedDate = 'Fecha a confirmar';
   if (eventObject.date) {
@@ -29,7 +29,7 @@ export const EventCard = eventObject => {
     <div class="img-container">
       <img src="${safeImage}" alt="${eventObject.name}" />  
     </div>
-    <div class="event-info flex-container">
+    <div class="event-info">
       <div>
         <h4>${eventObject.name}</h4>
         <p>${eventObject.location || 'Ubicación a confirmar'}</p>
