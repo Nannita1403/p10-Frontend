@@ -26,7 +26,10 @@ export const Events = async () => {
     const createEventButton = document.createElement('button');
     createEventButton.textContent = 'Crear un evento';
     createEventButton.id = 'create-event-btn';
-    createEventButton.addEventListener('click', ()=> NewEventForm(nextEvents.querySelector('div')));
+    createEventButton.addEventListener('click', () => {
+      const upcomingDiv = nextEvents.querySelector('.events-container');
+      createEventButton.addEventListener('click', () => NewEventForm(upcomingDiv));
+    });
     main.append(createEventButton);
   } else {
     main.innerHTML = `
@@ -35,7 +38,7 @@ export const Events = async () => {
     const linkRegistro = main.querySelector('.aviso a');
     linkRegistro.addEventListener('click', Register);
   }
-  
+
   await listOfEvents(nextEvents.querySelector('div'), 'isUpcoming');
   await listOfEvents(pastEvents.querySelector('div'), 'isPast');
 };
