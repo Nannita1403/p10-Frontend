@@ -36,27 +36,27 @@ export const EventAssistanceButton = (buttonContainer, eventObject) => {
  };
 
 const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
- e.target.classList.add('loading');
+  e.target.classList.add('loading');
 
   const requestObject = {
     endpoint: 'events',
     method: 'PUT'
-   };
-  
+  };
+
   if (userIsGoing) {
-    //Si el usuario está anotado al evento, uso el endpoint para darlo de baja
     requestObject.id = `removeAssistant/${eventId}`;
   } else {
-    //Si el usuario NO está anotado al evento, uso el endpoint general y paso los datos del asistente
     requestObject.id = eventId;
     requestObject.body = { assistants: userId };
   }
+
   const response = await apiRequest(requestObject); // ya es JSON
 
-  if (response) {
-    EventAssistanceButton(e.target.parentNode, response); // refresca el botón
+  if (response && response.eventUpdate) {
+    // Pasamos SOLO el evento actualizado al refrescar el botón
+    EventAssistanceButton(e.target.parentNode, response.eventUpdate);
     e.target.remove();
   } else {
-    showToast("No se pudo actualizar tu asistencia", "error");
+    showToast(response?.message || "No se pudo actualizar tu asistencia", "error");
   }
 };
