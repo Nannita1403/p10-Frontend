@@ -51,15 +51,12 @@ const handleEventAssistance = async ({ e, eventId, userId, userIsGoing }) => {
     requestObject.id = eventId;
     requestObject.body = { assistants: userId };
   }
-  const res = await apiRequest(requestObject);
-  const response = await res.json();
-  
-  if (res.status === 200) {
-    const { eventUpdate } = response;
-    EventAssistanceButton(e.target.parentNode, eventUpdate);
-    e.target.remove();
-  } else {
-    // Muestra error usando el tipo 'error'
-    showToast(response.message || "No se pudo actualizar tu asistencia", "error");
-  }
- };
+  const response = await apiRequest(requestObject); // ya es JSON
+
+    if (response) {
+      EventAssistanceButton(e.target.parentNode, response); // refresca el botón
+      e.target.remove();
+    } else {
+      showToast("No se pudo actualizar tu asistencia", "error");
+    }
+  };
