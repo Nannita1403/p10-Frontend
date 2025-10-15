@@ -5,10 +5,11 @@ import { listOfEvents } from '../../Events/Section/SectionEvent';
 import { showToast } from '../../Toasty/Toasty';
 import { Modal } from '../../PartsPage/Modal/Modal';
 import { mainRoute } from '../../../Data/Routes';
+import { Events } from '../../../pages/Events/Events';
 
-const postEvent = async e => {
+const postEvent = async (e, upcomingEventsDiv) => {
   e.preventDefault();
-  const form = e.target; // <-- aquí tomamos el formulario que disparó el submit
+  const form = e.target; 
 
   const artistSelect = form.querySelector('#artist');
   if (!artistSelect.value) {
@@ -43,38 +44,34 @@ const postEvent = async e => {
     return;
   }
 
-  // Crear FormData después de las validaciones
   const formData = new FormData(form);
 
   try {
     const res = await fetch(`${mainRoute}/events`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`, // no tocar Content-Type
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: formData,
     });
 
-    let data;
-    try {
-      data = await res.json();
-    } catch {
-      data = null;
-    }
-
+    const data = await res.json();
+  
     if (res.status === 201 && data) {
       showToast(data.message || 'Evento creado con éxito', 'linear-gradient(to right, #00b09b, #96c93d)');
       document.querySelector('#create-event')?.remove();
-      const upcomingEventsDiv = document.querySelector('section.isUpcoming > div');
-      await listOfEvents(upcomingEventsDiv, 'isUpcoming');
-    } else {
-      showToast(data?.message || 'Error al crear el evento', 'red');
-    }
-  } catch (error) {
-    console.error('Error creando evento:', error);
-    showToast('Error de conexión al crear el evento', 'red');
-  }
-};
+
+      if (upcomingEventsDiv) {
+        await listOfEvents(upcomingEventsDiv, 'isUpcoming');
+      }
+        } else {
+          showToast(data?.message || 'Error al crear el evento', 'red');
+        }
+      } catch (error) {
+        console.error('Error creando evento:', error);
+        showToast('Error de conexión al crear el evento', 'red');
+      }
+    };
 
 const previewImage = e => {
   const previewContainer = document.querySelector('#image-preview');
@@ -88,7 +85,7 @@ const previewImage = e => {
   reader.readAsDataURL(file);
 };
 
-export const NewEventForm = () => {
+export const NewEventForm = (upcomingEventsDiv) => {
   const eventFormContainer = Modal();
   eventFormContainer.id = 'create-event';
 
@@ -155,5 +152,5 @@ export const NewEventForm = () => {
     imageInput.addEventListener('change', previewImage);
   }
 
-  form.addEventListener('submit', postEvent);
+  form.addEventListener('submit', (e) => postEvent(e, upcomingEventsDiv));
 };
