@@ -65,6 +65,33 @@ const previewImage = (e) => {
   reader.readAsDataURL(file);
 };
 
+const ensureSelect = (form, fieldId, options) => {
+  let field = form.querySelector(`#${fieldId}`);
+  if (!field) return;
+
+  if (field.tagName.toLowerCase() !== 'select') {
+    const select = document.createElement('select');
+    select.id = fieldId;
+    select.name = fieldId;
+    select.className = 'input';
+    field.replaceWith(select);
+    field = select;
+  }
+
+field.innerHTML = '<option value="" disabled selected>Selecciona...</option>';
+  options.forEach(opt => {
+    const option = document.createElement('option');
+    if (typeof opt === 'string') {
+      option.value = opt;
+      option.textContent = opt;
+    } else {
+      option.value = opt._id;
+      option.textContent = opt.name;
+    }
+    field.append(option);
+  });
+};
+
 export const NewEventForm = (upcomingEventsDiv) => {
   const modal = Modal();
   modal.id = 'create-event';
@@ -86,29 +113,14 @@ export const NewEventForm = (upcomingEventsDiv) => {
     imageInput.addEventListener('change', previewImage);
   }
 
-  // Llenado dinámico de artistas
-  const artistSelect = form.querySelector('#artist');
+    // Llenar artistas desde API
   fetch(`${mainRoute}/artists`)
     .then(res => res.json())
-    .then(list => {
-      if (!Array.isArray(list)) return console.error('Expected array of artists', list);
-      list.forEach(a => {
-        const opt = document.createElement('option');
-        opt.value = a._id;
-        opt.textContent = a.name;
-        artistSelect.append(opt);
-      });
-    })
+    .then(list => Array.isArray(list) && ensureSelect(form, 'artist', list))
     .catch(err => console.error('Error cargando artistas:', err));
 
-  // Categorías
-  const categorySelect = form.querySelector('#category');
-  ['Pop','Rock','Indie','Electronica','Reggae','Metal','Mix'].forEach(cat => {
-    const opt = document.createElement('option');
-    opt.value = cat;
-    opt.textContent = cat;
-    categorySelect.append(opt);
-  });
+  // Categorías fijas
+  ensureSelect(form, 'category', ['Pop', 'Rock', 'Indie', 'Electrónica', 'Reggae', 'Metal', 'Mix']);
 
   form.addEventListener('submit', e => postEvent(e, upcomingEventsDiv));
 };
