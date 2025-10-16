@@ -9,10 +9,13 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
   transition: transform 0.3s ease;
-  background-image: url('/path-to-dibujos.png'); /* poner la imagen de fondo que quieras */
+
+  background-image: url('/path-to-dibujos.png'); 
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+
+  z-index: 999;
 }
 
 #create-event h2 {
@@ -28,7 +31,16 @@ form {
   gap: 20px;
 }
 
+@media (max-width: 700px) {
+  form {
+    grid-template-columns: 1fr;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+}
+
 .input-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   margin-bottom: 18px;
@@ -49,7 +61,7 @@ label.iLabel {
   top: 50%;
   transform: translate(-50%, -50%);
   font-weight: 500;
-  color: #999;
+  color: #aaa; 
   pointer-events: none;
   transition: 0.2s ease all;
 }
@@ -62,7 +74,7 @@ select.input:focus + label.iLabel,
 select.input:not(:placeholder-shown) + label.iLabel {
   top: -10px;
   font-size: 0.75rem;
-  color: #444;
+  color: #555; 
   left: 10px;
   transform: none;
 }
@@ -95,6 +107,7 @@ select.input {
   display: flex;
   justify-content: center;
 }
+
 #image-preview img {
   max-width: 100%;
   max-height: 180px;
@@ -146,13 +159,4 @@ button.loading::after {
   25% { clip-path: inset(0 98% 0 0); }
   50% { clip-path: inset(98% 0 0 0); }
   75% { clip-path: inset(0 0 0 98%); }
-}
-
-/* Mobile */
-@media (max-width: 700px) {
-  form {
-    grid-template-columns: 1fr;
-    max-height: 80vh;
-    overflow-y: auto;
-  }
 }
