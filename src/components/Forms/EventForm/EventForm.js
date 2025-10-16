@@ -4,6 +4,7 @@ import { listOfEvents } from '../../Events/Section/SectionEvent';
 import { showToast } from '../../Toasty/Toasty';
 import { Modal } from '../../PartsPage/Modal/Modal';
 import { mainRoute } from '../../../Data/Routes';
+import { createEventForm } from '../../../Data/Formularios';
 
 const postEvent = async (e, upcomingEventsDiv) => {
   e.preventDefault();
