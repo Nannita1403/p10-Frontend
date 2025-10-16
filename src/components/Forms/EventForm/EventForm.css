@@ -1,127 +1,79 @@
 #create-event {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 999;
+  top:0; left:0;
+  width:100vw; height:100vh;
+  display:flex; justify-content:center; align-items:center;
+  z-index:999;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: rgba(50,50,50,0.7);
+}
+
+#create-event form {
+  width: 90%;
   max-width: 700px;
-  width: 95%;
-  border-radius: 16px;
   padding: 30px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-image: url('/path-to-dibujos.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  color: #fff;
-}
-
-#create-event h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  font-size: 1.8rem;
-  color: #fff;
-}
-
-form {
+  border-radius:16px;
+  background: url('/path-to-dibujos.png') center/cover no-repeat;
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Dos columnas en desktop */
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-@media (max-width: 700px) {
-  form {
-    grid-template-columns: 1fr;
-    max-height: 80vh;
-    overflow-y: auto;
-  }
+@media (max-width:700px) {
+  #create-event form { grid-template-columns:1fr; }
 }
 
 .input-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 18px;
-  background: rgba(0, 176, 155, 0.9); /* mismo color que estaba flotando */
-  border-radius: 12px;
-  padding: 12px 15px;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-  transition: all 0.3s ease;
-}
-
-.input-container:focus-within {
-  box-shadow: 0 0 12px rgba(0,176,155,0.5);
+  display:flex; flex-direction:column;
+  margin-bottom:18px;
+  background: rgba(128,128,128,0.3);
+  border-radius:12px;
+  padding:12px;
+  box-shadow:0 0 8px rgba(0,0,0,0.3);
 }
 
 label.iLabel {
-  position: absolute;
-  top: -10px;
-  left: 10px;
-  padding: 2px 8px;
-  background: rgba(0,176,155,1);
-  color: #fff;
-  font-size: 0.75rem;
-  border-radius: 6px;
-  pointer-events: none;
-  transform: translateY(0);
-  transition: 0.2s ease all;
+  text-align:center;
+  color:#fff;
+  font-weight:600;
+  margin-bottom:6px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
 }
 
-input.input,
-textarea.input,
-select.input {
-  border: none;
-  outline: none;
-  font-size: 1rem;
-  background: transparent;
-  color: #fff;
-  width: 100%;
-  padding: 12px 10px;
+input.input, textarea.input, select.input {
+  border:none; outline:none;
+  font-size:1rem;
+  background:transparent;
+  color:#fff;
+  width:100%;
+  padding:10px;
 }
 
-textarea.input {
-  resize: vertical;
-  min-height: 100px;
-}
+textarea.input { min-height:100px; resize:vertical; }
 
 select.input {
-  appearance: none;
-  background: transparent url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'><path fill='%23fff' d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
-  background-size: 12px;
+  appearance:none;
+  background: transparent url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><path fill='%23fff' d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
+  background-size:12px;
 }
 
-#image-preview {
-  grid-column: 1 / -1;
-  margin-top: 12px;
-  display: flex;
-  justify-content: center;
-}
-
-#image-preview img {
-  max-width: 100%;
-  max-height: 180px;
-  border-radius: 12px;
-  object-fit: cover;
-}
+#image-preview { grid-column:1/-1; display:flex; justify-content:center; margin-top:10px; }
+#image-preview img { max-width:100%; max-height:180px; border-radius:12px; object-fit:cover; }
 
 #create-event button {
-  grid-column: 1 / -1;
+  grid-column:1/-1;
+  background: linear-gradient(to right,#00b09b,#96c93d);
+  color:#fff;
+  padding:14px;
+  font-size:1.05rem;
+  border:none; border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+  box-shadow:0 12px 35px rgba(16,39,112,0.25);
   transition: all 0.3s ease;
-  letter-spacing: 1px;
-  box-shadow: 0 12px 35px 0 rgba(16, 39, 112, 0.25);
-  font-weight: 600;
-  background: linear-gradient(to right, #00b09b, #96c93d);
-  color: #fff;
-  padding: 14px 0;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 1.05rem;
 }
-
 #create-event button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 40px 0 rgba(16, 39, 112, 0.35);
-  background: linear-gradient(to right, #00977f, #82b02f);
+  transform:translateY(-2px);
+  box-shadow:0 16px 40px rgba(16,39,112,0.35);
+  background: linear-gradient(to right,#00977f,#82b02f);
 }

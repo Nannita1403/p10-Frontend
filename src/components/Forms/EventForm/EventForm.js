@@ -12,63 +12,40 @@ const postEvent = async (e, upcomingEventsDiv) => {
   const submitBtn = form.querySelector('button');
 
   const artistSelect = form.querySelector('#artist');
-  if (!artistSelect.value) {
-    showToast('Por favor selecciona un artista válido', 'warning');
-    return;
-  }
+  if (!artistSelect.value) return showToast('Selecciona un artista válido', 'warning');
 
   const priceInput = form.querySelector('#price');
-  if (!priceInput.value || Number(priceInput.value) < 0) {
-    showToast('Introduce un precio válido (>= 0)', 'warning');
-    return;
-  }
+  if (!priceInput.value || Number(priceInput.value) < 0) return showToast('Introduce un precio válido (>=0)', 'warning');
 
   const nameInput = form.querySelector('#name');
   const dateInput = form.querySelector('#date');
   const locationInput = form.querySelector('#location');
-  if (!nameInput.value || !dateInput.value || !locationInput.value) {
-    showToast('El nombre, la fecha y la ubicación son obligatorios', 'warning');
-    return;
-  }
+  if (!nameInput.value || !dateInput.value || !locationInput.value)
+    return showToast('Nombre, fecha y ubicación son obligatorios', 'warning');
 
   const selectedDate = new Date(dateInput.value);
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  if (selectedDate < today) {
-    showToast('No puedes crear eventos en fechas pasadas', 'warning');
-    return;
-  }
+  today.setHours(0,0,0,0);
+  if (selectedDate < today) return showToast('No puedes crear eventos en fechas pasadas', 'warning');
 
   const imageInput = form.querySelector('#image');
-  if (!imageInput || !imageInput.files[0]) {
-    showToast('Selecciona una imagen para el evento', 'warning');
-    return;
-  }
+  if (!imageInput || !imageInput.files[0]) return showToast('Selecciona una imagen', 'warning');
 
   const categorySelect = form.querySelector('#category');
-  if (!categorySelect.value) {
-    showToast('Selecciona una categoría válida', 'warning');
-    return;
-  }
+  if (!categorySelect.value) return showToast('Selecciona una categoría', 'warning');
 
   const descriptionInput = form.querySelector('#description');
-  if (!descriptionInput.value.trim()) {
-    showToast('Agrega una descripción para tu evento', 'warning');
-    return;
-  }
+  if (!descriptionInput.value.trim()) return showToast('Agrega una descripción', 'warning');
 
   const formData = new FormData(form);
-
   submitBtn.classList.add('loading');
+
   try {
     const res = await fetch(`${mainRoute}/events`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       body: formData,
     });
-
     const data = await res.json();
     submitBtn.classList.remove('loading');
 
@@ -79,30 +56,25 @@ const postEvent = async (e, upcomingEventsDiv) => {
     } else {
       showToast(data?.message || 'Error al crear el evento', 'error');
     }
-  } catch (err) {
+  } catch {
     submitBtn.classList.remove('loading');
-    showToast('Error de conexión al crear el evento', 'error');
+    showToast('Error de conexión', 'error');
   }
 };
 
 const previewImage = (e) => {
-  const previewContainer = document.querySelector('#image-preview');
+  const preview = document.querySelector('#image-preview');
   const file = e.target.files[0];
-  if (!file) {
-    previewContainer.innerHTML = '';
-    return;
-  }
-
+  preview.innerHTML = '';
+  if (!file) return;
   const reader = new FileReader();
-  reader.onload = () => {
-    previewContainer.innerHTML = `<img src="${reader.result}" alt="Vista previa de imagen" class="preview-img" />`;
-  };
+  reader.onload = () => preview.innerHTML = `<img src="${reader.result}" class="preview-img" />`;
   reader.readAsDataURL(file);
 };
 
-const createInputContainer = ({ type = 'text', id, name, placeholder, isTextarea = false }) => {
+const createInputContainer = ({ type='text', id, name, placeholder, isTextarea=false, options=[] }) => {
   const container = document.createElement('div');
-  container.classList.add('input-container');
+  container.className = 'input-container';
 
   if (isTextarea) {
     container.innerHTML = `
@@ -116,6 +88,13 @@ const createInputContainer = ({ type = 'text', id, name, placeholder, isTextarea
         <option value="">Selecciona ${placeholder.toLowerCase()}</option>
       </select>
     `;
+    const select = container.querySelector('select');
+    options.forEach(opt => {
+      const option = document.createElement('option');
+      option.value = opt;
+      option.textContent = opt;
+      select.append(option);
+    });
   } else {
     container.innerHTML = `
       <label class="iLabel" for="${id}">${placeholder}</label>
@@ -127,66 +106,63 @@ const createInputContainer = ({ type = 'text', id, name, placeholder, isTextarea
 };
 
 export const NewEventForm = (upcomingEventsDiv) => {
-  const eventFormContainer = Modal();
-  eventFormContainer.id = 'create-event';
+  const modal = Modal();
+  modal.id = 'create-event';
+  UserForm(modal, 'Crea tu propio evento', createEventForm);
+  document.body.appendChild(modal);
 
-  UserForm(eventFormContainer, 'Crea tu propio evento', createEventForm);
-  document.body.appendChild(eventFormContainer);
+  const form = modal.querySelector('form');
+  if (!form) return console.error('No se encontró el formulario');
 
-  const form = eventFormContainer.querySelector('form');
-  if (!form) {
-    console.error('❌ No se encontró el formulario dentro del modal');
-    return;
-  }
+  const submitBtn = form.querySelector('button');
 
-  const submitButton = form.querySelector('button');
+  // Campos del formulario
+  form.append(createInputContainer({ id:'name', name:'name', placeholder:'Nombre del evento' }));
 
-  form.insertBefore(createInputContainer({ id: 'name', name: 'name', placeholder: 'Nombre del evento' }), submitButton);
-  form.insertBefore(createInputContainer({ type: 'date', id: 'date', name: 'date', placeholder: 'Fecha' }), submitButton);
-  const dateInput = form.querySelector('#date');
-  dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+  const dateContainer = createInputContainer({ type:'date', id:'date', name:'date', placeholder:'Fecha' });
+  form.append(dateContainer);
+  dateContainer.querySelector('input').setAttribute('min', new Date().toISOString().split('T')[0]);
 
-  form.insertBefore(createInputContainer({ id: 'location', name: 'location', placeholder: 'Ubicación' }), submitButton);
-  form.insertBefore(createInputContainer({ type: 'number', id: 'price', name: 'price', placeholder: 'Precio' }), submitButton);
-  const priceInput = form.querySelector('#price');
-  priceInput.setAttribute('min', '0');
+  form.append(createInputContainer({ id:'location', name:'location', placeholder:'Ubicación' }));
 
-  const artistContainer = createInputContainer({ type: 'select', id: 'artist', name: 'artist', placeholder: 'Artista' });
-  form.insertBefore(artistContainer, submitButton);
-  const artistSelect = form.querySelector('#artist');
+  const priceContainer = createInputContainer({ type:'number', id:'price', name:'price', placeholder:'Precio' });
+  form.append(priceContainer);
+  priceContainer.querySelector('input').setAttribute('min','0');
+
+  // Artista
+  const artistContainer = createInputContainer({ type:'select', id:'artist', name:'artist', placeholder:'Artista' });
+  form.append(artistContainer);
+  const artistSelect = artistContainer.querySelector('select');
   fetch(`${mainRoute}/artists`)
     .then(res => res.json())
-    .then(listOfArtists => {
-      listOfArtists.forEach(artist => {
-        const option = document.createElement('option');
-        option.value = artist._id;
-        option.textContent = artist.name;
-        artistSelect.append(option);
-      });
-    })
-    .catch(err => console.error('Error cargando artistas:', err));
+    .then(list => list.forEach(a => {
+      const opt = document.createElement('option');
+      opt.value = a._id;
+      opt.textContent = a.name;
+      artistSelect.append(opt);
+    }));
 
-  const categoryContainer = createInputContainer({ type: 'select', id: 'category', name: 'category', placeholder: 'Categoría' });
-  form.insertBefore(categoryContainer, submitButton);
-  const categorySelect = form.querySelector('#category');
-  ['Pop','Rock','Indie','Electronica','Reggae','Metal','Mix'].forEach(cat => {
-    const option = document.createElement('option');
-    option.value = cat;
-    option.textContent = cat;
-    categorySelect.append(option);
+  // Categoría
+  const categoryContainer = createInputContainer({
+    type:'select',
+    id:'category',
+    name:'category',
+    placeholder:'Categoría',
+    options:['Pop','Rock','Indie','Electronica','Reggae','Metal','Mix']
   });
+  form.append(categoryContainer);
 
-  form.insertBefore(createInputContainer({ id: 'description', name: 'description', placeholder: 'Descripción', isTextarea: true }), submitButton);
+  // Descripción
+  form.append(createInputContainer({ id:'description', name:'description', placeholder:'Descripción', isTextarea:true }));
 
   const imageInput = form.querySelector('#image');
   if (imageInput) {
     const previewDiv = document.createElement('div');
     previewDiv.id = 'image-preview';
-    previewDiv.classList.add('image-preview-container');
+    previewDiv.className = 'image-preview-container';
     imageInput.insertAdjacentElement('afterend', previewDiv);
-
     imageInput.addEventListener('change', previewImage);
   }
 
-  form.addEventListener('submit', (e) => postEvent(e, upcomingEventsDiv));
+  form.addEventListener('submit', e => postEvent(e, upcomingEventsDiv));
 };
