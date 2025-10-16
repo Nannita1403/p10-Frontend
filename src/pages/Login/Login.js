@@ -6,14 +6,19 @@ import { UserForm } from "../../components/Forms/UserForm/UserForm";
 import { Home } from "../Home/Home";
 import { showToast } from "../../components/Toasty/Toasty";
 
-
 const loginLayout = () => {
-
   const main = document.querySelector('main');
   main.innerHTML = '';
   const loginSection = document.createElement('section');
   loginSection.id = 'login';
+
   UserForm(loginSection, 'Login', loginForm);
+
+  const form = loginSection.querySelector('form');
+  if (form) {
+    form.addEventListener('submit', loginSubmit);
+  }
+
   main.append(loginSection);
 };
 
@@ -55,5 +60,4 @@ const loginLayout = () => {
 
   export const Login = () => {
   loginLayout();
-  document.querySelector("#login form").addEventListener("submit", loginSubmit);
-  };
+};

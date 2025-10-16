@@ -12,7 +12,6 @@ export const EventsSection = ({ title, eventTiming }) => {
 
   const eventDiv = document.createElement('div');
   eventDiv.classList.add('events-container');
-  eventDiv.innerHTML = '';
 
   eventSection.append(eventsTitle, eventDiv);
   return eventSection;
@@ -21,6 +20,8 @@ export const EventsSection = ({ title, eventTiming }) => {
 export const listOfEvents = async (parentNode, eventTiming) => {
   const events = await apiRequest({ method: 'GET', endpoint: 'events' });
   parentNode.innerHTML = '';
+
+  if (!events || !events.length) return;
 
   sortByDate(events);
 
@@ -49,7 +50,24 @@ export const listOfEvents = async (parentNode, eventTiming) => {
     }
   }
 
-  autoScrollEvents(parentNode);
+  // Esperar a que todas las imágenes carguen antes de iniciar el carrusel
+  const images = parentNode.querySelectorAll('img');
+  let loadedImages = 0;
+  if (images.length === 0) {
+    autoScrollEvents(parentNode);
+  } else {
+    images.forEach(img => {
+      if (img.complete) {
+        loadedImages++;
+      } else {
+        img.addEventListener('load', () => {
+          loadedImages++;
+          if (loadedImages === images.length) autoScrollEvents(parentNode);
+        });
+      }
+    });
+    if (loadedImages === images.length) autoScrollEvents(parentNode);
+  }
 };
 
 const autoScrollEvents = (container) => {
@@ -61,13 +79,13 @@ const autoScrollEvents = (container) => {
   let scrollPosition = 0;
   let interval = null;
 
-  const cardWidth = cards[0].offsetWidth + 20; 
-  const maxScroll = cardWidth * cards.length - container.offsetWidth + 20;
+  const cardWidth = cards[0]?.offsetWidth + 20 || 270; 
+  const maxScroll = Math.max(cardWidth * cards.length - container.offsetWidth, 0);
 
   const startAutoScroll = () => {
     if (interval) clearInterval(interval);
     interval = setInterval(() => {
-      if (window.innerWidth <= 700) return; 
+      if (window.innerWidth <= 700) return;
       scrollPosition += cardWidth;
       if (scrollPosition > maxScroll) scrollPosition = 0;
       container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
@@ -81,5 +99,6 @@ const autoScrollEvents = (container) => {
 
   window.addEventListener('resize', () => {
     scrollPosition = 0;
+    startAutoScroll();
   });
 };

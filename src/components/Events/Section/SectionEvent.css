@@ -8,9 +8,9 @@
   gap: 20px;
   overflow: hidden;
   flex-wrap: nowrap;
-  padding: var(--spacing-s);
+  padding: 0 10px;
   scroll-behavior: smooth;
-  width: 80%; 
+  width: 100%; 
   margin: 0 auto;
   position: relative;
 }

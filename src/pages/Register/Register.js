@@ -14,15 +14,26 @@ const registerLayout = () => {
 
   UserForm(registerSection, 'Register', registerForm);
 
+  const form = registerSection.querySelector('form');
+  if (form) {
+    form.addEventListener('submit', registerSubmit);
+  }
+
   const isRegisteredQuery = document.createElement('p');
   isRegisteredQuery.innerHTML = ` ¿Ya estás registrado? <a href=#>Login</a>`;
   const title = registerSection.querySelector('h2');
   title.insertAdjacentElement('afterend', isRegisteredQuery);
-  isRegisteredQuery.querySelector('a').addEventListener('click', Login);
+
+  const linkLogin = isRegisteredQuery.querySelector('a');
+  if (linkLogin) {
+    linkLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      Login();
+    });
+  }
 
   main.append(registerSection);
 };
-
 const registerSubmit = async e => {
   e.preventDefault();
   const username = document.querySelector('#username').value;
@@ -54,5 +65,4 @@ const registerSubmit = async e => {
 
   export const Register = () => {
     registerLayout();
-    document.querySelector("#register form").addEventListener("submit", registerSubmit);
   };

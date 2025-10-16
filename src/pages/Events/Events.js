@@ -32,13 +32,17 @@ export const Events = async () => {
     });
     main.append(createEventButton);
   } else {
-    main.innerHTML = `
-    <p class='aviso'>¡<a href=#>Regístrate</a> para poder crear tus propios eventos!</p>
-    `;
-    const linkRegistro = main.querySelector('.aviso a');
-    linkRegistro.addEventListener('click', Register);
+    const aviso = document.createElement('p');
+    aviso.className = 'aviso';
+    aviso.innerHTML = `¡<a href="#">Regístrate</a> para poder crear tus propios eventos!</p>`;
+    const linkRegistro = aviso.querySelector('a');
+    linkRegistro?.addEventListener('click', (e) => {
+      e.preventDefault();
+      Register();
+    });
+    main.append(aviso);
   }
 
-  await listOfEvents(nextEvents.querySelector('div'), 'isUpcoming');
-  await listOfEvents(pastEvents.querySelector('div'), 'isPast');
+  await listOfEvents(nextEvents.querySelector('.events-container'), 'isUpcoming');
+  await listOfEvents(pastEvents.querySelector('.events-container'), 'isPast');
 };
