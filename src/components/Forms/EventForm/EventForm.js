@@ -10,8 +10,6 @@ const postEvent = async (e, upcomingEventsDiv) => {
   e.preventDefault();
   const form = e.target;
   const submitBtn = form.querySelector('button');
-  submitBtn.classList.add('loading');
-
 
   const artistSelect = form.querySelector('#artist');
   if (!artistSelect.value) {
@@ -34,7 +32,7 @@ const postEvent = async (e, upcomingEventsDiv) => {
 
   const selectedDate = new Date(dateInput.value);
   const today = new Date();
-  today.setHours(0,0,0,0);
+  today.setHours(0, 0, 0, 0);
   if (selectedDate < today) {
     showToast('No puedes crear eventos en fechas pasadas', 'warning');
     return;
@@ -60,13 +58,14 @@ const postEvent = async (e, upcomingEventsDiv) => {
 
   const formData = new FormData(form);
 
+  submitBtn.classList.add('loading');
   try {
     const res = await fetch(`${mainRoute}/events`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-      body: new FormData(form),
+      body: formData,
     });
 
     const data = await res.json();
@@ -85,10 +84,13 @@ const postEvent = async (e, upcomingEventsDiv) => {
   }
 };
 
-const previewImage = e => {
+const previewImage = (e) => {
   const previewContainer = document.querySelector('#image-preview');
   const file = e.target.files[0];
-  if (!file) return;
+  if (!file) {
+    previewContainer.innerHTML = '';
+    return;
+  }
 
   const reader = new FileReader();
   reader.onload = () => {
@@ -101,7 +103,6 @@ export const NewEventForm = (upcomingEventsDiv) => {
   const eventFormContainer = Modal();
   eventFormContainer.id = 'create-event';
 
-  // Generar formulario base
   UserForm(eventFormContainer, 'Crea tu propio evento', createEventForm);
   document.body.appendChild(eventFormContainer);
 
@@ -113,7 +114,12 @@ export const NewEventForm = (upcomingEventsDiv) => {
 
   const submitButton = form.querySelector('button');
 
-  // --- Artista dinámico ---
+  const dateInput = form.querySelector('#date');
+  dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+
+  const priceInput = form.querySelector('#price');
+  priceInput.setAttribute('min', '0');
+
   const artistContainer = document.createElement('div');
   artistContainer.classList.add('input-container');
   artistContainer.innerHTML = `
@@ -137,7 +143,6 @@ export const NewEventForm = (upcomingEventsDiv) => {
     })
     .catch(err => console.error('Error cargando artistas:', err));
 
-  // --- Category select ---
   const categoryContainer = document.createElement('div');
   categoryContainer.classList.add('input-container');
   categoryContainer.innerHTML = `
@@ -155,7 +160,6 @@ export const NewEventForm = (upcomingEventsDiv) => {
   `;
   form.insertBefore(categoryContainer, submitButton);
 
-  // --- Description textarea ---
   const descriptionContainer = document.createElement('div');
   descriptionContainer.classList.add('input-container');
   descriptionContainer.innerHTML = `
@@ -164,16 +168,15 @@ export const NewEventForm = (upcomingEventsDiv) => {
   `;
   form.insertBefore(descriptionContainer, submitButton);
 
-  // --- Image preview ---
   const imageInput = form.querySelector('#image');
   if (imageInput) {
     const previewDiv = document.createElement('div');
     previewDiv.id = 'image-preview';
     previewDiv.classList.add('image-preview-container');
     imageInput.insertAdjacentElement('afterend', previewDiv);
+
     imageInput.addEventListener('change', previewImage);
   }
 
-  // --- Event submit ---
   form.addEventListener('submit', (e) => postEvent(e, upcomingEventsDiv));
 };

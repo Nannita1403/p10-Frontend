@@ -2,13 +2,17 @@
   background-color: #ffffff;
   border-radius: 16px;
   padding: 30px;
-  max-width: 520px;
+  max-width: 700px;
   width: 95%;
   margin: 50px auto;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
   transition: transform 0.3s ease;
+  background-image: url('/path-to-dibujos.png'); /* poner la imagen de fondo que quieras */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 #create-event h2 {
@@ -18,11 +22,17 @@
   color: #222;
 }
 
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
 .input-container {
   display: flex;
   flex-direction: column;
   margin-bottom: 18px;
-  background: #f9f9f9;
+  background: rgba(249, 249, 249, 0.85);
   border-radius: 12px;
   padding: 12px 15px;
   box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
@@ -34,10 +44,27 @@
 }
 
 label.iLabel {
-  font-weight: 600;
-  margin-bottom: 6px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 500;
+  color: #999;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+input.input:focus + label.iLabel,
+input.input:not(:placeholder-shown) + label.iLabel,
+textarea.input:focus + label.iLabel,
+textarea.input:not(:placeholder-shown) + label.iLabel,
+select.input:focus + label.iLabel,
+select.input:not(:placeholder-shown) + label.iLabel {
+  top: -10px;
+  font-size: 0.75rem;
   color: #444;
-  font-size: 0.95rem;
+  left: 10px;
+  transform: none;
 }
 
 input.input,
@@ -48,12 +75,12 @@ select.input {
   font-size: 1rem;
   background: transparent;
   width: 100%;
+  padding: 12px 10px;
 }
 
 textarea.input {
   resize: vertical;
   min-height: 100px;
-  padding: 6px 0;
 }
 
 select.input {
@@ -63,6 +90,7 @@ select.input {
 }
 
 #image-preview {
+  grid-column: 1 / -1;
   margin-top: 12px;
   display: flex;
   justify-content: center;
@@ -75,6 +103,7 @@ select.input {
 }
 
 #create-event button {
+  grid-column: 1 / -1;
   position: relative;
   transition: all 0.3s ease;
   letter-spacing: 1px;
@@ -119,8 +148,11 @@ button.loading::after {
   75% { clip-path: inset(0 0 0 98%); }
 }
 
-@media (max-width: 600px) {
-  #create-event {
-    padding: 20px;
+/* Mobile */
+@media (max-width: 700px) {
+  form {
+    grid-template-columns: 1fr;
+    max-height: 80vh;
+    overflow-y: auto;
   }
 }
