@@ -6,15 +6,17 @@
 .events-container {
   display: flex;
   gap: 20px;
-  overflow: hidden; 
+  overflow: hidden;
   flex-wrap: nowrap;
   padding: var(--spacing-s);
   scroll-behavior: smooth;
+  width: 80%; 
+  margin: 0 auto;
   position: relative;
 }
 
 .event-card {
-  flex: 0 0 auto; 
+  flex: 0 0 auto;
   width: 250px;
   min-width: 250px;
   border-radius: 12px;
@@ -25,13 +27,15 @@
 
 .events-container::after {
   content: '';
-  flex: 0 0 20px; 
+  flex: 0 0 20px;
 }
 
 @media (max-width: 700px) {
   .events-container {
     overflow-x: auto;
     flex-wrap: nowrap;
+    width: 95%; 
+    scroll-snap-type: x mandatory; 
   }
 }
 

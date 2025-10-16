@@ -56,32 +56,30 @@ const autoScrollEvents = (container) => {
   if (!container) return;
 
   const cards = container.querySelectorAll('.event-card');
-  if (cards.length === 0) return;
+  if (!cards.length) return;
 
   let scrollPosition = 0;
-  const cardWidth = cards[0].offsetWidth + 20; // ancho + gap
-  const maxScroll = cardWidth * cards.length - container.offsetWidth + 20; // espacio peek
+  let interval = null;
 
-  let interval = setInterval(() => {
-    if (window.innerWidth <= 700) return; // no mover en móvil
-    scrollPosition += cardWidth;
-    if (scrollPosition > maxScroll) scrollPosition = 0;
-    container.scrollTo({
-      left: scrollPosition,
-      behavior: 'smooth'
-    });
-  }, 3000);
+  const cardWidth = cards[0].offsetWidth + 20; 
+  const maxScroll = cardWidth * cards.length - container.offsetWidth + 20;
 
-  container.addEventListener('mouseenter', () => clearInterval(interval));
-  container.addEventListener('mouseleave', () => {
+  const startAutoScroll = () => {
+    if (interval) clearInterval(interval);
     interval = setInterval(() => {
-      if (window.innerWidth <= 700) return;
+      if (window.innerWidth <= 700) return; 
       scrollPosition += cardWidth;
       if (scrollPosition > maxScroll) scrollPosition = 0;
-      container.scrollTo({
-        left: scrollPosition,
-        behavior: 'smooth'
-      });
+      container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
     }, 3000);
+  };
+
+  startAutoScroll();
+
+  container.addEventListener('mouseenter', () => clearInterval(interval));
+  container.addEventListener('mouseleave', startAutoScroll);
+
+  window.addEventListener('resize', () => {
+    scrollPosition = 0;
   });
 };

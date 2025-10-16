@@ -25,8 +25,9 @@ const postEvent = async (e, upcomingEventsDiv) => {
 
   const nameInput = form.querySelector('#name');
   const dateInput = form.querySelector('#date');
-  if (!nameInput.value || !dateInput.value) {
-    showToast('El nombre y la fecha son obligatorios', 'warning');
+  const locationInput = form.querySelector('#location');
+  if (!nameInput.value || !dateInput.value || !locationInput.value) {
+    showToast('El nombre, la fecha y la ubicación son obligatorios', 'warning');
     return;
   }
 
@@ -99,6 +100,32 @@ const previewImage = (e) => {
   reader.readAsDataURL(file);
 };
 
+const createInputContainer = ({ type = 'text', id, name, placeholder, isTextarea = false }) => {
+  const container = document.createElement('div');
+  container.classList.add('input-container');
+
+  if (isTextarea) {
+    container.innerHTML = `
+      <label class="iLabel" for="${id}">${placeholder}</label>
+      <textarea class="input" id="${id}" name="${name}" placeholder="${placeholder}" required></textarea>
+    `;
+  } else if (type === 'select') {
+    container.innerHTML = `
+      <label class="iLabel" for="${id}">${placeholder}</label>
+      <select class="input" id="${id}" name="${name}" required>
+        <option value="">Selecciona ${placeholder.toLowerCase()}</option>
+      </select>
+    `;
+  } else {
+    container.innerHTML = `
+      <label class="iLabel" for="${id}">${placeholder}</label>
+      <input class="input" type="${type}" id="${id}" name="${name}" placeholder="${placeholder}" required />
+    `;
+  }
+
+  return container;
+};
+
 export const NewEventForm = (upcomingEventsDiv) => {
   const eventFormContainer = Modal();
   eventFormContainer.id = 'create-event';
@@ -114,22 +141,18 @@ export const NewEventForm = (upcomingEventsDiv) => {
 
   const submitButton = form.querySelector('button');
 
+  form.insertBefore(createInputContainer({ id: 'name', name: 'name', placeholder: 'Nombre del evento' }), submitButton);
+  form.insertBefore(createInputContainer({ type: 'date', id: 'date', name: 'date', placeholder: 'Fecha' }), submitButton);
   const dateInput = form.querySelector('#date');
   dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
 
+  form.insertBefore(createInputContainer({ id: 'location', name: 'location', placeholder: 'Ubicación' }), submitButton);
+  form.insertBefore(createInputContainer({ type: 'number', id: 'price', name: 'price', placeholder: 'Precio' }), submitButton);
   const priceInput = form.querySelector('#price');
   priceInput.setAttribute('min', '0');
 
-  const artistContainer = document.createElement('div');
-  artistContainer.classList.add('input-container');
-  artistContainer.innerHTML = `
-    <label class="iLabel" for="artist">Artista</label>
-    <select class="input" id="artist" name="artist" required>
-      <option value="">Selecciona un artista</option>
-    </select>
-  `;
+  const artistContainer = createInputContainer({ type: 'select', id: 'artist', name: 'artist', placeholder: 'Artista' });
   form.insertBefore(artistContainer, submitButton);
-
   const artistSelect = form.querySelector('#artist');
   fetch(`${mainRoute}/artists`)
     .then(res => res.json())
@@ -143,30 +166,17 @@ export const NewEventForm = (upcomingEventsDiv) => {
     })
     .catch(err => console.error('Error cargando artistas:', err));
 
-  const categoryContainer = document.createElement('div');
-  categoryContainer.classList.add('input-container');
-  categoryContainer.innerHTML = `
-    <label class="iLabel" for="category">Categoría</label>
-    <select class="input" id="category" name="category" required>
-      <option value="">Selecciona una categoría</option>
-      <option value="Pop">Pop</option>
-      <option value="Rock">Rock</option>
-      <option value="Indie">Indie</option>
-      <option value="Electronica">Electronica</option>
-      <option value="Reggae">Reggae</option>
-      <option value="Metal">Metal</option>
-      <option value="Mix">Mix</option>
-    </select>
-  `;
+  const categoryContainer = createInputContainer({ type: 'select', id: 'category', name: 'category', placeholder: 'Categoría' });
   form.insertBefore(categoryContainer, submitButton);
+  const categorySelect = form.querySelector('#category');
+  ['Pop','Rock','Indie','Electronica','Reggae','Metal','Mix'].forEach(cat => {
+    const option = document.createElement('option');
+    option.value = cat;
+    option.textContent = cat;
+    categorySelect.append(option);
+  });
 
-  const descriptionContainer = document.createElement('div');
-  descriptionContainer.classList.add('input-container');
-  descriptionContainer.innerHTML = `
-    <label class="iLabel" for="description">Descripción</label>
-    <textarea class="input" id="description" name="description" placeholder="Escribe una descripción..." required></textarea>
-  `;
-  form.insertBefore(descriptionContainer, submitButton);
+  form.insertBefore(createInputContainer({ id: 'description', name: 'description', placeholder: 'Descripción', isTextarea: true }), submitButton);
 
   const imageInput = form.querySelector('#image');
   if (imageInput) {
