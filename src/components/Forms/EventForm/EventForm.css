@@ -2,7 +2,7 @@
   position: fixed;
   top:0; left:0;
   width:100vw; height:100vh;
-  display:flex; justify-content:center; align-items:center;
+  display:flex; justify-content:center; align-items:flex-start;
   z-index:999;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: rgba(50,50,50,0.7);
@@ -14,16 +14,19 @@
 #create-event form {
   width: 100%;
   max-width: 900px;
+  min-height: 100px;  
   padding: 30px;
   border-radius:16px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   background-image: url('/pattern.png');
+  background-repeat: repeat;     
+  background-size: auto;           
+  background-position: top left;
   box-sizing: border-box;
-  grid-auto-rows: min-content; 
+  grid-auto-rows: min-content;      
 }
-
 @media (max-width:700px) {
   #create-event form { grid-template-columns:1fr; }
 }
@@ -71,16 +74,30 @@ input-container:focus-within label.iLabel,
   border-radius: 4px;
 }
 
-textarea.input { min-height:100px; resize:vertical; }
-
+textarea.input { 
+  min-height: 100px; 
+  resize: vertical; 
+  grid-column: 1 / -1; 
+}
 select.input {
   appearance:none;
   background: transparent url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><path fill='%23fff' d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
   background-size:12px;
 }
 
-#image-preview { grid-column:1/-1; display:flex; justify-content:center; margin-top:10px; }
-#image-preview img { max-width:100%; max-height:180px; border-radius:12px; object-fit:cover; }
+#image-preview { 
+  grid-column: 1 / -1; 
+  display: flex; 
+  justify-content: center; 
+  margin-top: 10px; 
+}
+
+#image-preview img { 
+  max-width: 100%; 
+  max-height: 180px; 
+  border-radius: 12px; 
+  object-fit: cover; 
+}
 
 #create-event button {
   grid-column:1/-1;
