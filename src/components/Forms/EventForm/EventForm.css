@@ -25,31 +25,46 @@
 }
 
 .input-container {
-  display:flex; flex-direction:column;
-  margin-bottom:18px;
-  background: url('/path-to-dibujos.png') center/cover no-repeat; 
-  border-radius:12px;
-  padding:12px;
-  box-shadow:0 0 8px rgba(0,0,0,0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+  background: url('/path-to-dibujos.png') center/cover no-repeat;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
 }
 
+
 label.iLabel {
-  text-align:center;
-  align-items: center;
-  justify-content: center;
-  color:#fff;
-  font-weight:600;
-  margin-bottom:6px;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+  position: absolute;
+  top: 12px;     
+  left: 12px;
+  color: #fff;     
+  font-size: 0.9rem;
+  pointer-events: none;
+  transition: all 0.2s ease;
 }
 
 input.input, textarea.input, select.input {
   border:none; outline:none;
   font-size:1rem;
   background:transparent;
-  color:#fff;
+  color:#000;
   width:100%;
-  padding:10px;
+  padding:12px;
+}
+
+input-container:focus-within label.iLabel,
+.input-container input.input:not(:placeholder-shown) + label.iLabel,
+.input-container textarea.input:not(:placeholder-shown) + label.iLabel {
+  top: -8px;
+  left: 10px;
+  font-size: 0.75rem;
+  background: rgba(0,176,155,1);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 textarea.input { min-height:100px; resize:vertical; }

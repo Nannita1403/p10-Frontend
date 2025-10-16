@@ -67,8 +67,9 @@ const previewImage = (e) => {
 export const NewEventForm = (upcomingEventsDiv) => {
   const modal = Modal();
   modal.id = 'create-event';
-  // Aquí solo usamos el formulario que ya viene completo
-  UserForm(modal, 'Crea tu propio evento');
+
+  // Aquí usamos el formulario que ya viene completo
+  UserForm(modal, 'Crea tu propio evento', createEventForm);
   document.body.appendChild(modal);
 
   const form = modal.querySelector('form');
@@ -84,20 +85,22 @@ export const NewEventForm = (upcomingEventsDiv) => {
     imageInput.addEventListener('change', previewImage);
   }
 
-const artistSelect = form.querySelector('#artist');
-fetch(`${mainRoute}/artists`)
-  .then(res => res.json())
-  .then(list => {
-    if (!Array.isArray(list)) return console.error('Expected array of artists', list);
-    list.forEach(a => {
-      const opt = document.createElement('option');
-      opt.value = a._id;
-      opt.textContent = a.name;
-      artistSelect.append(opt);
-    });
-  })
-  .catch(err => console.error('Error cargando artistas:', err));
+  // Llenado dinámico de artistas
+  const artistSelect = form.querySelector('#artist');
+  fetch(`${mainRoute}/artists`)
+    .then(res => res.json())
+    .then(list => {
+      if (!Array.isArray(list)) return console.error('Expected array of artists', list);
+      list.forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a._id;
+        opt.textContent = a.name;
+        artistSelect.append(opt);
+      });
+    })
+    .catch(err => console.error('Error cargando artistas:', err));
 
+  // Categorías
   const categorySelect = form.querySelector('#category');
   ['Pop','Rock','Indie','Electronica','Reggae','Metal','Mix'].forEach(cat => {
     const opt = document.createElement('option');
