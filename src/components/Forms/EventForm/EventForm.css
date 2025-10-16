@@ -16,7 +16,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  background: url('/path-to-dibujos.png') center/cover no-repeat;
+  background-image: url('/pattern.png');
 }
 
 @media (max-width:700px) {
