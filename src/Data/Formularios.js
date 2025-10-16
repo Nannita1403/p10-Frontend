@@ -9,14 +9,11 @@ export const registerForm = [
   ];
   
   export const createEventForm = [
-    { id: 'name', name: 'Nombre del Evento', type: 'text' },
-    { 
-      id: 'date', 
-      name: 'Fecha', 
-      type: 'date',
-      min: new Date().toISOString().split("T")[0]
-    },
-    { id: 'location', name: 'Lugar', type: 'text' },
-    { id: 'price', name: 'Precio', type: 'number' },
-    { id: 'img', name: 'Imagen', type: 'file' }
-  ];
+  { id: 'name', name: 'name', type: 'text', label: 'Nombre del Evento' },
+  { id: 'date', name: 'date', type: 'date', label: 'Fecha', min: new Date().toISOString().split("T")[0] },
+  { id: 'location', name: 'location', type: 'text', label: 'Lugar' },
+  { id: 'price', name: 'price', type: 'number', label: 'Precio (€)' },
+  { id: 'image', name: 'image', type: 'file', label: 'Imagen' },
+  { id: 'description', name: 'description', type: 'text', label: 'Descripción' },
+  { id: 'category', name: 'category', type: 'text', label: 'Categoría' } 
+];
