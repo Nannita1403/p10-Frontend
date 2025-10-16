@@ -35,6 +35,7 @@ const postEvent = async (e, upcomingEventsDiv) => {
 
   const formData = new FormData(form);
   submitBtn.classList.add('loading');
+  console.log('Evento:', name.value, date.value, location.value, price.value, artist.value, category.value);
 
   try {
     const res = await fetch(`${mainRoute}/events`, {
@@ -103,6 +104,9 @@ export const NewEventForm = (upcomingEventsDiv) => {
   const form = modal.querySelector('form');
   if (!form) return console.error('No se encontró el formulario');
 
+  form.querySelectorAll('input, select, textarea').forEach(el => {
+    if (!el.name) el.name = el.id;
+  });
   // Preview de imagen
   const imageInput = form.querySelector('#image');
   if (imageInput) {
@@ -113,14 +117,30 @@ export const NewEventForm = (upcomingEventsDiv) => {
     imageInput.addEventListener('change', previewImage);
   }
 
-    // Llenar artistas desde API
-  fetch(`${mainRoute}/artists`)
-    .then(res => res.json())
-    .then(list => Array.isArray(list) && ensureSelect(form, 'artist', list))
-    .catch(err => console.error('Error cargando artistas:', err));
+ // Artistas desde API
+fetch(`${mainRoute}/artists`)
+  .then(res => res.json())
+  .then(list => {
+    const artistSelect = form.querySelector('#artist');
+    if (artistSelect && Array.isArray(list)) {
+      list.forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a._id;
+        opt.textContent = a.name;
+        artistSelect.append(opt);
+      });
+    }
+  })
+  .catch(err => console.error('Error cargando artistas:', err));
 
   // Categorías fijas
-  ensureSelect(form, 'category', ['Pop', 'Rock', 'Indie', 'Electrónica', 'Reggae', 'Metal', 'Mix']);
+  const categorySelect = form.querySelector('#category');
+  ['Pop', 'Rock', 'Indie', 'Electrónica', 'Reggae', 'Metal', 'Mix'].forEach(cat => {
+    const option = document.createElement('option');
+    option.value = cat;
+    option.textContent = cat;
+    categorySelect.append(option);
+  });
 
   form.addEventListener('submit', e => postEvent(e, upcomingEventsDiv));
 };
