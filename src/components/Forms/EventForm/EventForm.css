@@ -13,10 +13,11 @@
   max-width: 700px;
   padding: 30px;
   border-radius:16px;
-  background: url('/path-to-dibujos.png') center/cover no-repeat;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+  background: rgba(255,255,255,0.05); 
+
 }
 
 @media (max-width:700px) {
@@ -26,7 +27,7 @@
 .input-container {
   display:flex; flex-direction:column;
   margin-bottom:18px;
-  background: rgba(128,128,128,0.3);
+  background: url('/path-to-dibujos.png') center/cover no-repeat; 
   border-radius:12px;
   padding:12px;
   box-shadow:0 0 8px rgba(0,0,0,0.3);
@@ -34,6 +35,8 @@
 
 label.iLabel {
   text-align:center;
+  align-items: center;
+  justify-content: center;
   color:#fff;
   font-weight:600;
   margin-bottom:6px;
