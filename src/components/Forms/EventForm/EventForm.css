@@ -21,6 +21,7 @@
   gap: 20px;
   background-image: url('/pattern.png');
   box-sizing: border-box;
+  grid-auto-rows: min-content; 
 }
 
 @media (max-width:700px) {
