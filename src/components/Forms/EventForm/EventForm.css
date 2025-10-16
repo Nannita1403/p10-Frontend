@@ -1,21 +1,20 @@
 #create-event {
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 30px;
+  position: fixed; 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
   max-width: 700px;
   width: 95%;
-  margin: 50px auto;
+  border-radius: 16px;
+  padding: 30px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  position: relative;
-  transition: transform 0.3s ease;
-
-  background-image: url('/path-to-dibujos.png'); 
+  background-color: rgba(255,255,255,0.95);
+  background-image: url('/path-to-dibujos.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-
-  z-index: 999;
 }
 
 #create-event h2 {
@@ -25,11 +24,13 @@
   color: #222;
 }
 
+
 form {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
+
 
 @media (max-width: 700px) {
   form {
@@ -61,7 +62,7 @@ label.iLabel {
   top: 50%;
   transform: translate(-50%, -50%);
   font-weight: 500;
-  color: #aaa; 
+  color: #aaa;
   pointer-events: none;
   transition: 0.2s ease all;
 }
@@ -74,7 +75,7 @@ select.input:focus + label.iLabel,
 select.input:not(:placeholder-shown) + label.iLabel {
   top: -10px;
   font-size: 0.75rem;
-  color: #555; 
+  color: #555;
   left: 10px;
   transform: none;
 }
@@ -117,7 +118,6 @@ select.input {
 
 #create-event button {
   grid-column: 1 / -1;
-  position: relative;
   transition: all 0.3s ease;
   letter-spacing: 1px;
   box-shadow: 0 12px 35px 0 rgba(16, 39, 112, 0.25);

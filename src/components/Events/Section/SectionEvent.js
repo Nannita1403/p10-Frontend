@@ -6,21 +6,21 @@ import { apiRequest } from '../../../Utils/ApiRequest';
 export const EventsSection = ({ title, eventTiming }) => {
   const eventSection = document.createElement('section');
   eventSection.classList.add('events', eventTiming);
-  const eventsTitle = document.createElement('h2');
-  const eventDiv = document.createElement('div');
-  eventsTitle.textContent = title;
-  eventSection.append(eventsTitle);
-  eventDiv.classList.add('events-container'); 
-  eventDiv.innerHTML = '';
-  eventSection.append(eventDiv);
 
+  const eventsTitle = document.createElement('h2');
+  eventsTitle.textContent = title;
+
+  const eventDiv = document.createElement('div');
+  eventDiv.classList.add('events-container');
+  eventDiv.innerHTML = '';
+
+  eventSection.append(eventsTitle, eventDiv);
   return eventSection;
 };
 
 export const listOfEvents = async (parentNode, eventTiming) => {
-  const events = await apiRequest ({ method: 'GET', endpoint: 'events' });
-
-  parentNode.innerHTML ='';
+  const events = await apiRequest({ method: 'GET', endpoint: 'events' });
+  parentNode.innerHTML = '';
 
   sortByDate(events);
 
@@ -37,14 +37,51 @@ export const listOfEvents = async (parentNode, eventTiming) => {
           event.date = `${day}/${month}/${year}`;
         }
       }
-    if (event.price && !isNaN(event.price)) {
-          event.price = `${event.price} €`;
-        } else {
-          event.price = 'Precio a confirmar';
-        }
 
-        const eventCard = EventCard(event);
-        parentNode.append(eventCard);
+      if (event.price && !isNaN(event.price)) {
+        event.price = `${event.price} €`;
+      } else {
+        event.price = 'Precio a confirmar';
       }
+
+      const eventCard = EventCard(event);
+      parentNode.append(eventCard);
     }
+  }
+
+  autoScrollEvents(parentNode);
+};
+
+const autoScrollEvents = (container) => {
+  if (!container) return;
+
+  const cards = container.querySelectorAll('.event-card');
+  if (cards.length === 0) return;
+
+  let scrollPosition = 0;
+  const cardWidth = cards[0].offsetWidth + 20; // ancho + gap
+  const maxScroll = cardWidth * cards.length - container.offsetWidth + 20; // espacio peek
+
+  let interval = setInterval(() => {
+    if (window.innerWidth <= 700) return; // no mover en móvil
+    scrollPosition += cardWidth;
+    if (scrollPosition > maxScroll) scrollPosition = 0;
+    container.scrollTo({
+      left: scrollPosition,
+      behavior: 'smooth'
+    });
+  }, 3000);
+
+  container.addEventListener('mouseenter', () => clearInterval(interval));
+  container.addEventListener('mouseleave', () => {
+    interval = setInterval(() => {
+      if (window.innerWidth <= 700) return;
+      scrollPosition += cardWidth;
+      if (scrollPosition > maxScroll) scrollPosition = 0;
+      container.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+    }, 3000);
+  });
 };

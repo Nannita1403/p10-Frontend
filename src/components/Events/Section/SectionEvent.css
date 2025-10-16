@@ -1,54 +1,57 @@
 .events {
-    display: block;
-  }
-  
-  /*.events > div {
-    display: flex;
-    justify-content: center;
-  }*/
-  
-  .events-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: flex-start;
-  width: 100%;
-  margin: 0 auto;
+  display: block;
+  padding: 20px 0;
 }
 
-  .events > div.events-container {
+.events-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start; 
-  gap: var(--spacing-m);       
-  padding: var(--spacing-s);   
-  width: 100%;
-  overflow: visible;         
+  gap: 20px;
+  overflow: hidden; 
+  flex-wrap: nowrap;
+  padding: var(--spacing-s);
+  scroll-behavior: smooth;
+  position: relative;
 }
-  .events .loader {
-    background: transparent;
-    height: 70px;
-    width:70px;
-    display: flex;
-    min-height: 200px;
+
+.event-card {
+  flex: 0 0 auto; 
+  width: 250px;
+  min-width: 250px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: transform 0.5s ease-in-out;
+}
+
+.events-container::after {
+  content: '';
+  flex: 0 0 20px; 
+}
+
+@media (max-width: 700px) {
+  .events-container {
+    overflow-x: auto;
+    flex-wrap: nowrap;
   }
-  /* Scrollbar Styles */
-  /* width */
-  .events > div.events-container::-webkit-scrollbar {
-    height: 8px;
-  }
-  
-  /* Track */
-  .events > div.events-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  
-  /* Handle */
-  .events > div.events-container::-webkit-scrollbar-thumb {
-    background: var(--color-dark-1);
-  }
-  
-  /* Handle on hover */
-  .events > div.events-container::-webkit-scrollbar-thumb:hover {
-    background: var(--color-dark-2);
-  }
+}
+
+.events > div.events-container::-webkit-scrollbar {
+  height: 8px;
+}
+.events > div.events-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.events > div.events-container::-webkit-scrollbar-thumb {
+  background: var(--color-dark-1);
+}
+.events > div.events-container::-webkit-scrollbar-thumb:hover {
+  background: var(--color-dark-2);
+}
+
+.events .loader {
+  background: transparent;
+  height: 70px;
+  width: 70px;
+  display: flex;
+  min-height: 200px;
+}
