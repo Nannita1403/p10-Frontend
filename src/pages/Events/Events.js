@@ -21,17 +21,15 @@ export const Events = async () => {
   });
 
   main.append(nextEvents, pastEvents);
-  
-   if (localStorage.getItem('token')) {
-    const createEventButton = document.createElement('button');
-    createEventButton.textContent = 'Crear un evento';
-    createEventButton.id = 'create-event-btn';
-    createEventButton.addEventListener('click', () => {
+      if (localStorage.getItem('token')) {
+      const createEventButton = document.createElement('button');
+      createEventButton.textContent = 'Crear un evento';
+      createEventButton.id = 'create-event-btn';
+      main.append(createEventButton);
+
       const upcomingDiv = nextEvents.querySelector('.events-container');
       createEventButton.addEventListener('click', () => NewEventForm(upcomingDiv));
-    });
-    main.append(createEventButton);
-  } else {
+    } else {
     const aviso = document.createElement('p');
     aviso.className = 'aviso';
     aviso.innerHTML = `¡<a href="#">Regístrate</a> para poder crear tus propios eventos!</p>`;
